@@ -40,7 +40,7 @@ g.SetLineColor(ROOT.kGray)
 g.SetMaximum(2) 	
 g.SetMinimum(-2)	
 for i,o in enumerate(obj["params"]):
-	#print(i,o["name"], o["fit"],o["prefit"])
+	print(i,o["name"], o["fit"],o["prefit"])
 	g.SetPoint(i,float(i),o[p_fit][1])
 	g.SetPointError(i,0.03,0.03,-1*(o[p_fit][0]),o[p_fit][2])
 	#inihist.GetXaxis().SetBinLabel(i,o["name"])
