@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
   // Define categories
   map<string, Categories> cats;
   // hack for MSSMtt2017
-  if(categories == "MSSMtt"){
+  if(categories == "MSSMtt" ){
     cats["tt"] = {
         { 8, "tt_nobtag"},
         { 9, "tt_btag"},
@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
   else throw std::runtime_error("Given categorization is not known.");
 
   // Specify signal processes and masses
-  vector<string> sig_procs = {"ggh","bbh"};
+  vector<string> sig_procs = {"ggH","bbH"};
 
   vector<string> masses = {"200","600"};
   // vector<string> masses = {"90","100","110","120","130","140","160","180", "200", "250", "350", "400", "450", "500", "600", "700", "800", "900","1000","1200","1400","1600","1800","2000","2300","2600","2900","3200"};
@@ -150,9 +150,9 @@ int main(int argc, char **argv) {
     cb.AddObservations({"*"}, {"htt"}, {"2017"}, {chn}, cats[chn]);
     cb.AddProcesses({"*"}, {"htt"}, {"2017"}, {chn}, bkg_procs[chn], cats[chn],
                     false);
-    cb.AddProcesses(masses, {"htt"}, {"2017"}, {chn}, {"ggh"}, cats[chn],
+    cb.AddProcesses(masses, {"htt"}, {"2017"}, {chn}, {"ggH"}, cats[chn],
                     true);
-    cb.AddProcesses(masses, {"htt"}, {"2017"}, {chn}, {"bbh"}, cats[chn],
+    cb.AddProcesses(masses, {"htt"}, {"2017"}, {chn}, {"bbH"}, cats[chn],
                     true);
     // Add SM125 as background here
   }
