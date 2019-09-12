@@ -113,7 +113,7 @@ int main(int argc, char **argv) {
   // Define categories
   map<string, Categories> cats;
   // hack for MSSMtt2017
-  if(categories == "MSSMtt" ){
+  if(categories == "MSSMtt"){
     cats["tt"] = {
         { 8, "tt_nobtag"},
         { 9, "tt_btag"},
