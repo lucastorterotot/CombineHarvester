@@ -1,6 +1,30 @@
+"""Script for generating prefit post plot from the impacts.json."""
+
+# Author: Ece Asilar easilar@gmail.com
+
+"""
+# Objectives ###
+  This script loops over the "params" keys in the given json file. 
+  saves plot in formats: png, pdf, tex
+# Optional parameters ###
+  1) input json file path, default is : impacts.json
+  2) output file path
+# Usage ###
+  example usage:
+  python plot_prefit_postfit.py --jsonpath=<location_of_json>
+"""
+
+
+from optparse import OptionParser
+
+
+oparser = OptionParser()
+oparser.add_option('--basepath', default='impacts.json' , action='store')
+oparser.add_option('--output', default='./nuisances_my' , action='store')
+(options, oargs) = oparser.parse_args()
 
 import json
-with open('impacts.json', 'r') as myfile:
+with open(options.basepath, 'r') as myfile:
     res=myfile.read()
 obj = json.loads(res)
 
@@ -40,8 +64,8 @@ g_postfit.Draw("e2 z same")
 
 #inihist.Draw("same")
 cb.Update()
-cb.SaveAs("nuisances_my.png")
-cb.SaveAs("nuisances_my.pdf")
+cb.SaveAs(options.output+".png")
+cb.SaveAs(options.output+".pdf")
 
 
 
