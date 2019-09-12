@@ -29,3 +29,12 @@ combineTool.py -t -1 -M Impacts -d tt/600/ws.root -m 600 --doFits --robustFit 1 
 combineTool.py -M Impacts -d tt/600/ws.root -m 600 --redefineSignalPOIs r_ggh --allPars --exclude r_bbh -o impacts_ggH_600.json
 plotImpacts.py -i impacts_ggH_600.json -o impacts_ggH_600 --transparent
 ```
+
+Below Find the recipe for low mt\_tot region fit. Fit works, we have the prefit and b-only uncertainities.
+
+```bash
+cd CombineHarvester/MSSMtt2017
+MorphingMSSM2017 --real_data=true 
+combineTool.py -M T2W -o "ws.root" -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO '"map=^.*/ggH$:r_ggH[0,-2,200]"' --PO '"map=^.*/bbH$:r_bbH[0,-2,200]"' -i output/mssm_tt/tt/*
+combine -M FitDiagnostics --saveNLL --numToysForShapes 1000 --verbose 1 -d output/mssm_tt/tt/600/ws.root -m 600 --autoMaxPOIs "*" --autoBoundsPOIs "*" --saveNormalizations --saveShapes --saveWithUncertainties --saveWorkspace -n test_1 --plots
+```

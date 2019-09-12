@@ -409,23 +409,23 @@ int main(int argc, char **argv) {
   // }
 
   // Merge bins and set bin-by-bin uncertainties if no autoMCStats is used.
-  if (classic_bbb) {
-    auto bbb = ch::BinByBinFactory()
-                   .SetAddThreshold(0.0)
-                   .SetMergeThreshold(0.5)
-                   .SetFixNorm(false);
-    bbb.MergeBinErrors(cb.cp().backgrounds());
-    bbb.AddBinByBin(cb.cp().backgrounds(), cb);
-  }
-  if (binomial_bbb) {
-    auto bbb = ch::BinByBinFactory()
-                   .SetPattern("CMS_$ANALYSIS_$CHANNEL_$BIN_$ERA_$PROCESS_binomial_bin_$#")
-                   .SetBinomialP(0.022)
-                   .SetBinomialErrors(true)
-                   .SetBinomialN(1000.0)
-                   .SetFixNorm(false);
-    bbb.AddBinByBin(cb.cp().backgrounds(), cb);
-  }
+////if (classic_bbb) {
+////  auto bbb = ch::BinByBinFactory()
+////                 .SetAddThreshold(0.0)
+////                 .SetMergeThreshold(0.5)
+////                 .SetFixNorm(false);
+////  bbb.MergeBinErrors(cb.cp().backgrounds());
+////  bbb.AddBinByBin(cb.cp().backgrounds(), cb);
+////}
+////if (binomial_bbb) {
+////  auto bbb = ch::BinByBinFactory()
+////                 .SetPattern("CMS_$ANALYSIS_$CHANNEL_$BIN_$ERA_$PROCESS_binomial_bin_$#")
+////                 .SetBinomialP(0.022)
+////                 .SetBinomialErrors(true)
+////                 .SetBinomialN(1000.0)
+////                 .SetFixNorm(false);
+////  bbb.AddBinByBin(cb.cp().backgrounds(), cb);
+////}
 
 
   // This function modifies every entry to have a standardised bin name of
