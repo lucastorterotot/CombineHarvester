@@ -526,6 +526,11 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   //     .AddSyst(cb, "QCDScale_ggHWW", "lnN", SystMap<>::init(1.039));
   // }
 
+  cb.cp()
+    .channel({"tt"})
+    .process({signals})
+    .AddSyst(cb, "arbitrary_flat_unc", "lnN", SystMap<>::init(1.10));
+
   // ##########################################################################
   // Uncertainty: Embedded events
   // References:
