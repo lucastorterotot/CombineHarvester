@@ -19,10 +19,12 @@ then to try the fit for the 600 GeV mass point:
 cd CombineHarvester/MSSMtt2017
 MorphingMSSM2017 --real_data=true
 
-combineTool.py -M T2W -o "ws.root" -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO '"map=^.*/ggH$:r_ggH[0,-1,200]"' --PO '"map=^.*/bbH$:r_bbH[0,-1,200]"' -i output/mssm_tt/tt/*
+combineTool.py -M T2W -o "ws.root" -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO '"map=^.*/ggH$:r_ggH[0,0,200]"' --PO '"map=^.*/bbH$:r_bbH[0,0,200]"' -i output/mssm_tt/tt/\*/
+
 cd output/mssm_tt/
 
-combine -M FitDiagnostics --saveNLL --numToysForShapes 10000 --verbose 1 -d tt/600/ws.root -m 600 --autoMaxPOIs "*" --autoBoundsPOIs "*" --saveNormalizations --saveShapes --saveWithUncertainties --saveWorkspace -n test_output --plots
+combine -M FitDiagnostics --saveNLL --numToysForShapes 10000 --verbose 1 -d tt/\*/ws.root -m 600 --saveNormalizations --saveShapes --saveWithUncertainties --saveWorkspace -n test_output --plots  --redefineSignalPOIs r_ggH
+
 ```
 Then to plot the nuisances:
 ```
