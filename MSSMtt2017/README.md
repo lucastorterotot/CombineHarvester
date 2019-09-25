@@ -1,4 +1,5 @@
 ```bash
+bash <(curl -s https://raw.githubusercontent.com/cms-analysis/CombineHarvester/master/CombineTools/scripts/sparse-checkout-ssh.sh)
 export SCRAM_ARCH=slc6_amd64_gcc530 
 source $VO_CMS_SW_DIR/cmsset_default.sh
 scram project CMSSW CMSSW_8_1_0
