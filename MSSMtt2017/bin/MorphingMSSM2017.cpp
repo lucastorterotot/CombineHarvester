@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
   if (mod_dep) { 
     mass = "mA"; 
   } else {
-    mass = "mH"; 
+    mass = "MH"; 
   }
 
   RooRealVar mA(mass.c_str(), mass.c_str(), 90., 3200.);
@@ -154,7 +154,7 @@ int main(int argc, char **argv) {
   // Specify signal processes and masses
   vector<string> sig_procs = {"ggH","bbH"};
 
-  vector<string> masses = {"80","100","110","120","130","140","180","200","250","300","400","450","600","700","800","900","1200","1400","1500","2300","2600","2900","3200"};
+  vector<string> masses = {"100","110","120","130"};//,"140","180","200","250","300","400","450","600","700","800","900","1200","1400","1500","2300","2600","2900","3200"};
   // vector<string> masses = {"90","100","110","120","130","140","160","180", "200", "250", "350", "400", "450", "500", "600", "700", "800", "900","1000","1200","1400","1600","1800","2000","2300","2600","2900","3200"};
 
   map<string, VString> signal_types = {
@@ -162,7 +162,7 @@ int main(int argc, char **argv) {
     {"bbH", {"bbH"}}
   };
   if (mod_dep){
-    map<string, VString> signal_types = {
+    signal_types = {
       {"ggH", {"ggh_htautau", "ggH_Htautau", "ggA_Atautau"}},
       {"bbH", {"bbh_htautau", "bbH_Htautau", "bbA_Atautau"}}
     };
@@ -173,12 +173,12 @@ int main(int argc, char **argv) {
   // Add observations and processes
 
   for (auto chn : chns) {
-    cb.AddObservations({"*"}, {"htt"}, {"2017"}, {chn}, cats[chn]);
-    cb.AddProcesses({"*"}, {"htt"}, {"2017"}, {chn}, bkg_procs[chn], cats[chn],
+    cb.AddObservations({"*"}, {"htt"}, {"13TeV"}, {chn}, cats[chn]);
+    cb.AddProcesses({"*"}, {"htt"}, {"13TeV"}, {chn}, bkg_procs[chn], cats[chn],
                     false);
-    cb.AddProcesses(masses, {"htt"}, {"2017"}, {chn}, {signal_types["ggH"]}, cats[chn],
+    cb.AddProcesses(masses, {"htt"}, {"13TeV"}, {chn}, signal_types["ggH"], cats[chn],
                     true);
-    cb.AddProcesses(masses, {"htt"}, {"2017"}, {chn}, {signal_types["bbH"]}, cats[chn],
+    cb.AddProcesses(masses, {"htt"}, {"13TeV"}, {chn}, signal_types["bbH"], cats[chn],
                     true);
     // Add SM125 as background here
   }
@@ -191,9 +191,20 @@ int main(int argc, char **argv) {
     cb.cp().channel({chn}).backgrounds().ExtractShapes(
         input_dir[chn] + "htt_" + chn + ".inputs_datacards_mt_tot" + ".root",
         "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
+    if (mod_dep) {
+      cb.cp().channel({chn}).process(signal_types["bbH"]).ExtractShapes(
+	input_dir[chn] + "htt_" + chn + ".inputs_datacards_mt_tot" + ".root",
+	"$BIN/bbH$MASS",
+	"$BIN/bbH$MASS_$SYSTEMATIC");
+      cb.cp().channel({chn}).process(signal_types["ggH"]).ExtractShapes(
+	input_dir[chn] + "htt_" + chn + ".inputs_datacards_mt_tot" + ".root",
+	"$BIN/ggH$MASS",
+	"$BIN/ggH$MASS_$SYSTEMATIC");
+    }
+    else {
     cb.cp().channel({chn}).process(sig_procs).ExtractShapes(
         input_dir[chn] + "htt_" + chn + ".inputs_datacards_mt_tot" + ".root",
-        "$BIN/$PROCESS$MASS", "$BIN/$PROCESS$MASS_$SYSTEMATIC");
+        "$BIN/$PROCESS$MASS", "$BIN/$PROCESS$MASS_$SYSTEMATIC");}
   }
 
   // Delete processes with 0 yield
@@ -458,12 +469,9 @@ int main(int argc, char **argv) {
   // the form: {analysis}_{channel}_{bin_id}_{era}
   ch::SetStandardBinNames(cb, "$ANALYSIS_$CHANNEL_$BINID_$ERA");
 
-  cout << "building workspace"<<endl;
   RooWorkspace ws("htt", "htt");
-  cout << "opening rootfile"<<endl;
  
   TFile demo("htt_mssm_demo.root", "RECREATE");
-  cout << "declaring masses rooabsreal vars"<<endl;
 
 
   map<string, RooAbsReal *> mass_var = {
@@ -475,17 +483,16 @@ int main(int argc, char **argv) {
     mass_var = {
       {"ggH", &mA}, {"bbH", &mA}
   };
-    
   }
 
 
   std::string norm = "norm";
   auto bins = cb.bin_set();
   for (auto b : bins) {
-    cout << "gahering signal processes"<<endl;
     auto procs = cb.cp().bin({b}).process(ch::JoinStr({signal_types["ggH"], signal_types["bbH"]})).process_set();
     for (auto p : procs) {
-      cout << "building roo morphing for process: "<<p<<endl;
+      // for (auto t : signal_types["ggH"]) {std::cout<<t<<std::endl;}
+      // for (auto t : signal_types["bbH"]) {std::cout<<t<<std::endl;}
       std::string pdf_name = ch::BuildRooMorphing(ws, cb, b, p, *(mass_var[p]), norm, true, false, false, &demo);
     }
   }
@@ -498,9 +505,9 @@ int main(int argc, char **argv) {
   // make one directory per chn-cat, one per chn and cmb. In this code we only
   // store the individual datacards for each directory to be combined later.
   string output_prefix = "output/";
-  ch::CardWriter writer(output_prefix + output_folder + "/$TAG/$MASS/$BIN.txt",
+  ch::CardWriter writer(output_prefix + output_folder + "/$TAG/$BIN.txt",
                         output_prefix + output_folder +
-                            "/$TAG/common/htt_input_" + "2017" + ".root");
+                            "/$TAG/htt_input_" + "2017" + ".root");
 
   // We're not using mass as an identifier - which we need to tell the
   // CardWriter

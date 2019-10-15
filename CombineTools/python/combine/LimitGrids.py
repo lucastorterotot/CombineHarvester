@@ -23,8 +23,8 @@ class AsymptoticGrid(CombineToolBase):
 
   def attach_intercept_args(self, group):
     CombineToolBase.attach_intercept_args(self, group)
-    group.add_argument('--setPhysicsModelParameters', default=None)
-    group.add_argument('--freezeNuisances', default=None)
+    group.add_argument('--setParameters', default=None)
+    group.add_argument('--freezeParameters', default=None)
 
   def attach_args(self, group):
     CombineToolBase.attach_args(self, group)
@@ -68,14 +68,14 @@ class AsymptoticGrid(CombineToolBase):
     # Have to merge some arguments from both the command line and the "opts" in the json file
     to_freeze = []
     to_set = []
-    set_opt, opts = self.extract_arg('--setPhysicsModelParameters', opts)
+    set_opt, opts = self.extract_arg('--setParameters', opts)
     if set_opt is not None: to_set.append(set_opt)
-    freeze_opt, opts = self.extract_arg('--freezeNuisances', opts)
+    freeze_opt, opts = self.extract_arg('--freezeParameters', opts)
     if freeze_opt is not None: to_freeze.append(freeze_opt)
-    if hasattr(self.args, 'setPhysicsModelParameters') and self.args.setPhysicsModelParameters is not None:
-        to_set.append(self.args.setPhysicsModelParameters)
-    if hasattr(self.args, 'freezeNuisances') and self.args.freezeNuisances is not None:
-        to_freeze.append(self.args.freezeNuisances)
+    if hasattr(self.args, 'setParameters') and self.args.setParameters is not None:
+        to_set.append(self.args.setParameters)
+    if hasattr(self.args, 'freezeParameters') and self.args.freezeParameters is not None:
+        to_freeze.append(self.args.freezeParameters)
 
     file_dict = { }
     for p in points:
@@ -100,7 +100,7 @@ class AsymptoticGrid(CombineToolBase):
           freeze_arg = 'all'
         else:
           freeze_arg = ','.join(['%s,%s' % (POIs[0], POIs[1])] + to_freeze)
-        point_args = '-n .%s --setPhysicsModelParameters %s --freezeNuisances %s' % (name, set_arg, freeze_arg)
+        point_args = '-n .%s --setParameters %s --freezeParameters %s' % (name, set_arg, freeze_arg)
         cmd = ' '.join(['combine -M Asymptotic', opts, point_args] + self.passthru)
         self.job_queue.append(cmd)
 
