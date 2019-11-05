@@ -157,20 +157,6 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
       .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
       .AddSyst(cb, "TES_HadronicTau_3prong0pi0_mc_", "shape", SystMap<>::init(0.5));
 
-  cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
-      .AddSyst(cb, "TES_promptMuon_1prong0pi0_mc_", "shape", SystMap<>::init(0.5));
-
-  cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
-      .AddSyst(cb, "TES_promptEle_1prong0pi0_mc_", "shape", SystMap<>::init(0.5));
-
-  cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
-      .AddSyst(cb, "TES_promptEle_1prong1pi0_mc_", "shape", SystMap<>::init(0.5));
 
   // Embedded uncorrelated uncertainty
 
@@ -189,20 +175,6 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
       .process({"Embedded"})
       .AddSyst(cb, "TES_HadronicTau_3prong0pi0_emb_", "shape", SystMap<>::init(0.5));
 
-  cb.cp()
-      .channel({"tt"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_promptMuon_1prong0pi0_emb_", "shape", SystMap<>::init(0.5));
-
-  cb.cp()
-      .channel({"tt"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_promptEle_1prong0pi0_emb_", "shape", SystMap<>::init(0.5));
-
-  cb.cp()
-      .channel({"tt"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_promptEle_1prong1pi0_emb_", "shape", SystMap<>::init(0.5));
 
   // MC + embedded correlated uncertainty
 
@@ -223,18 +195,18 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   cb.cp()
       .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
-      .AddSyst(cb, "TES_promptMuon_1prong0pi0_", "shape", SystMap<>::init(0.5));
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
+      .AddSyst(cb, "TES_promptMuon_1prong0pi0_", "shape", SystMap<>::init(1.));
 
   cb.cp()
       .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
-      .AddSyst(cb, "TES_promptEle_1prong0pi0_", "shape", SystMap<>::init(0.5));
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
+      .AddSyst(cb, "TES_promptEle_1prong0pi0_", "shape", SystMap<>::init(1.));
 
   cb.cp()
       .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
-      .AddSyst(cb, "TES_promptEle_1prong1pi0_", "shape", SystMap<>::init(0.5));
+    .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
+      .AddSyst(cb, "TES_promptEle_1prong1pi0_", "shape", SystMap<>::init(1.));
 
   // ##########################################################################
   // Uncertainty: Jet energy scale
