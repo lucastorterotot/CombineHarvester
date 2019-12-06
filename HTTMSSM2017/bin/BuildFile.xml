@@ -1,5 +1,5 @@
-<bin file="MorphingMSSMFull2016.cpp" name="MorphingMSSMFull2016"></bin>
-<bin file="QCDRatioMeasurementFull2016.cpp" name="QCDRatioMeasurementFull2016"></bin>
+<bin file="MorphingHTTMSSM2017.cpp" name="MorphingHTTMSSM2017"></bin>
+<bin file="QCDRatioMeasurement2017.cpp" name="QCDRatioMeasurement2017"></bin>
 <bin file="FakeTauESMeasurement.cpp" name="FakeTauESMeasurement"></bin>
 <use name="root"/>
 <use name="rootmath"/>
@@ -15,5 +15,5 @@
 <use name="boost_regex"/>
 <use name="rootpy"/>
 <use name="CombineHarvester/CombineTools"/>
-<use name="CombineHarvester/MSSMFull2016"/>
+<use name="CombineHarvester/HTTMSSM2017"/>
 <use name="CombineHarvester/CombinePdfs"/>

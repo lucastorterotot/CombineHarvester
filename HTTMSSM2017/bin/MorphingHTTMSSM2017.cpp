@@ -19,7 +19,7 @@
 #include "CombineHarvester/CombineTools/interface/Algorithm.h"
 #include "CombineHarvester/CombineTools/interface/AutoRebin.h"
 #include "CombineHarvester/CombinePdfs/interface/MorphFunctions.h"
-#include "CombineHarvester/MSSMFull2016/interface/HttSystematics_MSSMRun2.h"
+#include "CombineHarvester/HTTMSSM2017/interface/HttSystematics_MSSMRun2.h"
 #include "RooWorkspace.h"
 #include "RooRealVar.h"
 #include "TH2.h"
@@ -143,19 +143,19 @@ int main(int argc, char** argv) {
   typedef vector<string> VString;
   typedef vector<pair<int, string>> Categories;
   std::map<string, string> input_dir;
-  input_dir["zmm"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_zmm+"/";
-  input_dir["ttbar"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_em+"/";
+  input_dir["zmm"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_zmm+"/";
+  input_dir["ttbar"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_em+"/";
 
   if(!bbH_nlo){
-    input_dir["em"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_em+"/";
-    input_dir["mt"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_mt+"/";
-    input_dir["et"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_et+"/";
-    input_dir["tt"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_tt+"/";
+    input_dir["em"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_em+"/";
+    input_dir["mt"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_mt+"/";
+    input_dir["et"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_et+"/";
+    input_dir["tt"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_tt+"/";
   } else {
-    input_dir["em"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_em+"/NLO/";
-    input_dir["mt"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_mt+"/NLO/";
-    input_dir["et"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_et+"/NLO/";
-    input_dir["tt"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/MSSMFull2016/shapes/"+input_folder_tt+"/NLO/";
+    input_dir["em"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_em+"/NLO/";
+    input_dir["mt"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_mt+"/NLO/";
+    input_dir["et"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_et+"/NLO/";
+    input_dir["tt"]  = string(getenv("CMSSW_BASE")) + "/src/CombineHarvester/HTTMSSM2017/shapes/"+input_folder_tt+"/NLO/";
   }
 
   VString chns;

@@ -6,7 +6,7 @@ http://cms-analysis.github.io/CombineHarvester/
 
 ## Setting up datacards
 
-The default options to `MorphingMSSMFull2016` have been set to those used to produce the final unblinded results. The following additional options may be of interest:
+The default options to `MorphingHTTMSSM2017` have been set to those used to produce the final unblinded results. The following additional options may be of interest:
 
  - `--bbH_nlo=false`: Revert to the old LO pythia samples for bbH
  - `--ggHatNLO=false`: Revert to the unweighted LO pythia for ggHatNLO
@@ -17,7 +17,7 @@ The default options to `MorphingMSSMFull2016` have been set to those used to pro
 
 ### Model independent limits
 
-`MorphingMSSMFull2016 --output_folder="mssm_201017" -m MH --manual_rebin=true`
+`MorphingHTTMSSM2017 --output_folder="mssm_201017" -m MH --manual_rebin=true`
 
 *FOR SYNC COMPARISONS ONLY*: to make sync comparisons we need to also check the relative differences between observed limits and so --real_data should be set to true in this case. Be very careful and under absolutely no circumstances use directories set up this way for anything other than sync comparisons.
 
@@ -36,19 +36,19 @@ However it is also possible to control the fractions directly by setting the opt
 
 **MSSMvsBkg**
 
-`MorphingMSSMFull2016 --output_folder="mssm_201017_MSSMvsBkg_mhmodp" --manual_rebin=true`
+`MorphingHTTMSSM2017 --output_folder="mssm_201017_MSSMvsBkg_mhmodp" --manual_rebin=true`
 
 If not using the argument `-m MH`, the code will create datacards for all three Higgs bosons as required for model dependent limits.
 
 **MSSMvsSM**
 
-`MorphingMSSMFull2016 --output_folder="mssm_201017_MSSMvsSM_mhmodp" --manual_rebin=true -h "signal_SM125"`
+`MorphingHTTMSSM2017 --output_folder="mssm_201017_MSSMvsSM_mhmodp" --manual_rebin=true -h "signal_SM125"`
 `
 ### Model independent limits with SM H as background
 
 **DO NOT do this until binning for manual_rebin is set to something sensible.**
 
-`MorphingMSSMFull2016 --output_folder="mssm_201017_SMHbkg" -m MH --manual_rebin=true -h "bkg_SM125"`
+`MorphingHTTMSSM2017 --output_folder="mssm_201017_SMHbkg" -m MH --manual_rebin=true -h "bkg_SM125"`
 
 ## Setting up workspaces
 
@@ -280,7 +280,7 @@ The plotting code can then be used in postfit mode and passed the output of the 
 
 1. Set up workspace:
 
-`MorphingMSSMFull2016 --output_folder="mssm_201017_unblinding_mhmodp" --postfix="-mttot" --manual_rebin=true`
+`MorphingHTTMSSM2017 --output_folder="mssm_201017_unblinding_mhmodp" --postfix="-mttot" --manual_rebin=true`
 
 `combineTool.py -M T2W -o "mhmodp.root" -P CombineHarvester.CombinePdfs.MSSM:MSSM --PO filePrefix=$PWD/shapes/Models/ --PO modelFiles=13TeV,mhmodp_mu200_13TeV.root,1 -i output/mssm_201017_unblinding_mhmodp/cmb/ --PO MSSM-NLO-Workspace=$PWD/shapes/Models/higgs_pt_v3_mssm_mode.root`
 
@@ -301,7 +301,7 @@ The plotting code can then be used in postfit mode and passed the output of the 
 
 1. Set up workspace:
 
-`MorphingMSSMFull2016 --output_folder="mssm_201017_unblinding" -m MH --postfix="-mttot" --manual_rebin=true`
+`MorphingHTTMSSM2017 --output_folder="mssm_201017_unblinding" -m MH --postfix="-mttot" --manual_rebin=true`
 
 `combineTool.py -M T2W -o "ws.root" -P HiggsAnalysis.CombinedLimit.PhysicsModel:multiSignalModel --PO '"map=^.*/ggH$:r_ggH[0,0,200]"' --PO '"map=^.*/bbH$:r_bbH[0,0,200]"' -i output/mssm_201017_unblinding/cmb/ `
 
@@ -323,7 +323,7 @@ The plotting code can then be used in postfit mode and passed the output of the 
 
 The commands below needed to create a workspace are chosen consistently with the first two steps for model-independent limits 1a) and 2a) with the change --real_data=true for the Morphing step.
 
-`MorphingMSSMFull2016 --output_folder="mssm_201017_unblinding" -m MH --postfix="-mttot" --control_region=0 --auto_rebin=true --real_data=true --zmm_fit=true --ttbar_fit=true --jetfakes=true`
+`MorphingHTTMSSM2017 --output_folder="mssm_201017_unblinding" -m MH --postfix="-mttot" --control_region=0 --auto_rebin=true --real_data=true --zmm_fit=true --ttbar_fit=true --jetfakes=true`
 
 For creating the workspace for pulls from the datacards we use the multi-signal model.
 

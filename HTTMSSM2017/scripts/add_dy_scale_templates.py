@@ -17,16 +17,16 @@ cats = ['et_nobtag_tight','et_btag_tight','et_nobtag_loosemt','et_btag_loosemt',
 datacard_files = []
 # get all LO and NLO datacard files for all specified groups
 for g in groups:
-  lo_cards = os.listdir(cmssw_base+'/src/CombineHarvester/MSSMFull2016/shapes/'+g+'/')
-  nlo_cards = os.listdir(cmssw_base+'/src/CombineHarvester/MSSMFull2016/shapes/'+g+'/NLO/')
+  lo_cards = os.listdir(cmssw_base+'/src/CombineHarvester/HTTMSSM2017/shapes/'+g+'/')
+  nlo_cards = os.listdir(cmssw_base+'/src/CombineHarvester/HTTMSSM2017/shapes/'+g+'/NLO/')
   lo_matching = fnmatch.filter(lo_cards, 'htt_*.inputs-mssm-13TeV-mttot.root')  
   nlo_matching = fnmatch.filter(nlo_cards, 'htt_*.inputs-mssm-13TeV-mttot.root')
   for i in lo_matching: 
-    if any('_'+c+'.' in i for c in chns): datacard_files.append(cmssw_base+'/src/CombineHarvester/MSSMFull2016/shapes/'+g+'/'+i)    
+    if any('_'+c+'.' in i for c in chns): datacard_files.append(cmssw_base+'/src/CombineHarvester/HTTMSSM2017/shapes/'+g+'/'+i)    
   for i in nlo_matching: 
-    if any('_'+c+'.' in i for c in chns): datacard_files.append(cmssw_base+'/src/CombineHarvester/MSSMFull2016/shapes/'+g+'/NLO/'+i) 
+    if any('_'+c+'.' in i for c in chns): datacard_files.append(cmssw_base+'/src/CombineHarvester/HTTMSSM2017/shapes/'+g+'/NLO/'+i) 
 
-infilename = cmssw_base+'/src/CombineHarvester/MSSMFull2016/input/ztt_scale_uncerts.root'
+infilename = cmssw_base+'/src/CombineHarvester/HTTMSSM2017/input/ztt_scale_uncerts.root'
 dy_systs_infile = ROOT.TFile(infilename)
 
 for f in datacard_files:
