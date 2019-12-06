@@ -89,15 +89,19 @@ class AsymptoticGrid(CombineToolBase):
       if p in file_dict:
         file_dict[p].append(f)
 
+    freeze_arg=''
     for key,val in file_dict.iteritems():
       name = '%s.%s.%s.%s' % (POIs[0], key[0], POIs[1], key[1])
       print '>> Point %s' % name
       if len(val) == 0:
         print 'Going to run limit for point %s' % (key,)
         set_arg = ','.join(['%s=%s,%s=%s' % (POIs[0], key[0], POIs[1], key[1])] + to_set)
-        freeze_arg = ','.join(['%s,%s' % (POIs[0], POIs[1])] + to_freeze)
+        if 'all' in to_freeze:
+          freeze_arg = 'all'
+        else:
+          freeze_arg = ','.join(['%s,%s' % (POIs[0], POIs[1])] + to_freeze)
         point_args = '-n .%s --setParameters %s --freezeParameters %s' % (name, set_arg, freeze_arg)
-        cmd = ' '.join(['combine -M AsymptoticLimits', opts, point_args] + self.passthru)
+        cmd = ' '.join(['combine -M Asymptotic', opts, point_args] + self.passthru)
         self.job_queue.append(cmd)
 
     bail_out = len(self.job_queue) > 0
@@ -284,9 +288,14 @@ class HybridNewGrid(CombineToolBase):
                     CLsErr = hyp_res.CLsplusbError()
                 testStatObs = hyp_res.GetTestStatisticData()
             if precomputed is not None:
-                CLs = precomputed[contour][0]
-                CLsErr = precomputed[contour][1]
-                testStatObs = precomputed[contour][3]
+                if "obs" in precomputed.keys():
+                    CLs = precomputed[contour][0]
+                    CLsErr = precomputed[contour][1]
+                    testStatObs = precomputed[contour][3]
+                else:
+                    CLs = 0
+                    CLsErr = 0
+                    testStatObs = 0
             if ntoys == 0: CLsErr = 0 # If there were no toys then ClsError() will return inf
             dist = 0.
             if CLsErr == 0.:
@@ -560,13 +569,24 @@ class HybridNewGrid(CombineToolBase):
             # has been set to true then we'll write all model points where at least one HypoTestResult
             # is present
             if (res is not None or precomputed is not None) and (ok or incomplete) and self.args.output:
-                output_x.append(float(key[0]))
-                output_y.append(float(key[1]))
-                output_ntoys.append(point_res['ntoys'])
-                for contour in contours:
-                    output_data[contour].append(point_res[contour][0])
-                    output_clserr[contour].append(point_res[contour][1])
-                    output_signif[contour].append(point_res[contour][2])
+                black_listed_points_2D = [(k[0], k[1]) for k in blacklisted_points]
+                if (key[0], key[1]) not in black_listed_points_2D:
+                    output_x.append(float(key[0]))
+                    output_y.append(float(key[1]))
+                    output_ntoys.append(point_res['ntoys'])
+                    for contour in contours:
+                        output_data[contour].append(point_res[contour][0])
+                        output_clserr[contour].append(point_res[contour][1])
+                        output_signif[contour].append(point_res[contour][2])
+                else:
+                    print "Setting point:","(",key[0],",",key[1],") to 0.0"
+                    output_x.append(float(key[0]))
+                    output_y.append(float(key[1]))
+                    output_ntoys.append(0)
+                    for contour in contours:
+                        output_data[contour].append(0.0)
+                        output_clserr[contour].append(0.0)
+                        output_signif[contour].append(0.0)
 
             # Do the job cycle generation if requested
             if not ok and self.args.cycles > 0:
