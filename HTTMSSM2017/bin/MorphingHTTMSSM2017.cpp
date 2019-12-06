@@ -176,6 +176,14 @@ int main(int argc, char** argv) {
     std::cout << "For tt channels : \n";
     for (unsigned int i=0; i < bkgs.size(); i++) std::cout << bkgs[i] << std::endl;
   }
+  if (chan.find("mt") != std::string::npos) {
+    std::cout << "For mt channels : \n";
+    for (unsigned int i=0; i < bkgs.size(); i++) std::cout << bkgs[i] << std::endl;
+  }
+  if (chan.find("et") != std::string::npos) {
+    std::cout << "For et channels : \n";
+    for (unsigned int i=0; i < bkgs.size(); i++) std::cout << bkgs[i] << std::endl;
+  }
   bkg_procs["tt"] = bkgs;
   bkg_procs["mt"] = bkgs;
   bkg_procs["et"] = bkgs;
