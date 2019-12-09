@@ -616,6 +616,26 @@ int main(int argc, char** argv) {
   // cb.cp().channel({"et"}).RenameSystematic(cb,"norm_ff_tt_dm1_njet0_stat","norm_ff_tt_dm1_et_stat");
 
 
+  
+  if (classic_bbb) {
+    auto bbb = ch::BinByBinFactory()
+      .SetAddThreshold(0.0)
+      .SetMergeThreshold(0.5)
+      .SetFixNorm(false);
+    bbb.MergeBinErrors(cb.cp().backgrounds());
+    bbb.AddBinByBin(cb.cp().backgrounds(), cb);
+    }
+////if (binomial_bbb) {
+////  auto bbb = ch::BinByBinFactory()
+////                 .SetPattern("CMS_$ANALYSIS_$CHANNEL_$BIN_$ERA_$PROCESS_binomial_bin_$#")
+////                 .SetBinomialP(0.022)
+////                 .SetBinomialErrors(true)
+////                 .SetBinomialN(1000.0)
+////                 .SetFixNorm(false);
+////  bbb.AddBinByBin(cb.cp().backgrounds(), cb);
+////}
+
+
   // This function modifies every entry to have a standardised bin name of
   // the form: {analysis}_{channel}_{bin_id}_{era}
   // which is commonly used in the htt analyses
