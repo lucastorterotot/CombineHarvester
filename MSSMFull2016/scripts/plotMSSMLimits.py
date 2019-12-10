@@ -59,6 +59,16 @@ parser.add_argument(
     '--by-channel', action='store_true', help="""Style for limits split by channel""")
 args = parser.parse_args()
 
+
+extra_points = {
+    'style' : {
+            'exp0' : { 'MarkerColor' : ROOT.kBlue , 'LineColor' : ROOT.kBlue}
+            },
+    'legend' : {
+        'exp0' : { 'Label' : 'MSSM 2016', 'DrawStyle' : 'PLSAME', 'LegendStyle' : 'PLSAME' }
+        }
+}
+
 style_dict_exponly = {
         'style' : {
             'exp0' : { 'MarkerColor' : ROOT.kRed}
@@ -134,7 +144,6 @@ def DrawAxisHists(pads, axis_hists, def_pad=None):
     if def_pad is not None:
         def_pad.cd()
 
-
 ## Boilerplate
 ROOT.PyConfig.IgnoreCommandLineOptions = True
 ROOT.gROOT.SetBatch(ROOT.kTRUE)
@@ -160,16 +169,15 @@ for padx in pads:
 
 graphs = []
 graph_sets = []
-
 if args.higgs_bg or args.higgs_injected:
-    legend = plot.PositionedLegend(0.48, 0.25, 3, 0.015)
+    legend = plot.PositionedLegend(0.48, 0.25, 3, 0.015,0.1)
     legend.SetTextSize(0.025)
 elif args.by_channel:
-    legend = plot.PositionedLegend(0.18, 0.25, 3, 0.02) #0.25
+    legend = plot.PositionedLegend(0.18, 0.25, 3, 0.02,0.1) #0.25
     legend.SetTextSize(0.03)
     legend.SetHeader('Expected:')
 else:
-    legend = plot.PositionedLegend(0.15, 0.2, 3, 0.015) #0.25
+    legend = plot.PositionedLegend(0.15, 0.2, 3, 0.015,0.1) #0.25
     legend.SetTextSize(0.03)
 
 if args.do_new_ggH:
@@ -201,21 +209,32 @@ if args.auto_style is not None:
 # Process each input argument
 has_band = False
 
+
 dummyhist = ROOT.TH1F("dummy", "", 1, 0, 1)
 plot.Set(dummyhist, LineColor=ROOT.kWhite, FillColor=ROOT.kWhite)
 
 for src in args.input:
     splitsrc = src.split(':')
-    file = splitsrc[0]
+    file = splitsrc[0]    
+
     # limit.json => Draw as full obs + exp limit band
     if len(splitsrc) == 1:
-        graph_sets.append(plot.StandardLimitsFromJSONFile(file, args.show.split(',')))
+        if len(args.input)>1:
+            if src is args.input[1]:
+                graph_sets.append(plot.StandardLimitsFromJSONFile(file, ['exp0']))
+        else:
+            graph_sets.append(plot.StandardLimitsFromJSONFile(file, args.show.split(',')))
         if axis is None:
             axis = plot.CreateAxisHists(len(pads), graph_sets[-1].values()[0], True)
             DrawAxisHists(pads, axis, pads[0])
         if args.higgs_bg or args.higgs_injected or args.plot_exp_points or args.use_hig_17_020_style:
-            plot.StyleLimitBand(graph_sets[-1],overwrite_style_dict=style_dict["style"])
-            plot.DrawLimitBand(pads[0], graph_sets[-1], legend=legend,legend_overwrite=style_dict["legend"])
+            if len(args.input)>1:
+                if src is args.input[1]:
+                    plot.StyleLimitBand(graph_sets[-1],overwrite_style_dict=extra_points["style"])
+                    plot.DrawLimitBand(pads[0], graph_sets[-1], legend=legend,legend_overwrite=extra_points["legend"])
+            else:
+                plot.StyleLimitBand(graph_sets[-1],overwrite_style_dict=style_dict["style"])
+                plot.DrawLimitBand(pads[0], graph_sets[-1], legend=legend,legend_overwrite=style_dict["legend"])
         else:
             plot.StyleLimitBand(graph_sets[-1])
             plot.DrawLimitBand(pads[0], graph_sets[-1],legend=legend)
@@ -345,7 +364,7 @@ legend.Draw()
 legend.Draw()
 
 
-plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
+# plot.DrawCMSLogo(pads[0], 'CMS', args.cms_sub, 11, 0.045, 0.035, 1.2, '', 0.8)
 plot.DrawTitle(pads[0], args.title_right, 3)
 plot.DrawTitle(pads[0], args.title_left, 1)
 
