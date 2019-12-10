@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
   // hack for MSSMtt2017
   if(categories == "MSSMtt"){
     cats["tt"] = {
-        { 8, "tt_nobtag"},
+        // { 8, "tt_nobtag"},
         { 9, "tt_btag"},
 	// { 7, "tt_inclusive"},
     };
@@ -154,7 +154,7 @@ int main(int argc, char **argv) {
   // Specify signal processes and masses
   vector<string> sig_procs = {"ggH","bbH"};
 
-  vector<string> masses = {"80","90","110","120","130","180","250","300","400","450","600","800","900","1200","1400","1800","2000","2300","2600","2900"};//{"110","120","130","180","250","300","400","450","600","800","900","1200","1400","2300","2600","2900"};//add 1800 for amcatnlo 80 and 90 empty!//{"100","110","120","130","140","180","200","250","300","400","450","600","700","800","900","1200","1400","1500","2300","2600","2900","3200"};,"800","450",
+  vector<string> masses = {"110","120","130","180","250","300","400","450","600","800","900","1200","1400","1800","2000","2300","2600","2900"};//{"110","120","130","180","250","300","400","450","600","800","900","1200","1400","2300","2600","2900"};//add 1800 for amcatnlo 80 and 90 empty!//{"100","110","120","130","140","180","200","250","300","400","450","600","700","800","900","1200","1400","1500","2300","2600","2900","3200"};,"800","450","80","90",
   // vector<string> masses = {"90","100","110","120","130","140","160","180", "200", "250", "350", "400", "450", "500", "600", "700", "800", "900","1000","1200","1400","1600","1800","2000","2300","2600","2900","3200"};
 
   map<string, VString> signal_types = {
@@ -205,6 +205,7 @@ int main(int argc, char **argv) {
     cb.cp().channel({chn}).process(sig_procs).ExtractShapes(
         input_dir[chn] + "htt_" + chn + ".inputs_datacards_mt_tot" + ".root",
         "$BIN/$PROCESS$MASS", "$BIN/$PROCESS$MASS_$SYSTEMATIC");}
+    
   }
 
   // Delete processes with 0 yield
@@ -476,57 +477,57 @@ int main(int argc, char **argv) {
   // the form: {analysis}_{channel}_{bin_id}_{era}
   ch::SetStandardBinNames(cb, "$ANALYSIS_$CHANNEL_$BINID_$ERA");
 
-  RooWorkspace ws("htt", "htt");
+  // RooWorkspace ws("htt", "htt");
  
-  TFile demo("htt_mssm_demo.root", "RECREATE");
+  // TFile demo("htt_mssm_demo.root", "RECREATE");
 
 
-  map<string, RooAbsReal *> mass_var = {
-    {"ggh_htautau", &mh}, {"ggH_Htautau", &mH}, {"ggA_Atautau", &mA},
-    {"bbh_htautau", &mh}, {"bbH_Htautau", &mH}, {"bbA_Atautau", &mA}
-  };
+  // map<string, RooAbsReal *> mass_var = {
+  //   {"ggh_htautau", &mh}, {"ggH_Htautau", &mH}, {"ggA_Atautau", &mA},
+  //   {"bbh_htautau", &mh}, {"bbH_Htautau", &mH}, {"bbA_Atautau", &mA}
+  // };
 
-  if (!mod_dep) {
-    mass_var = {
-      {"ggH", &mA}, {"bbH", &mA}
-  };
-  }
+  // if (!mod_dep) {
+  //   mass_var = {
+  //     {"ggH", &mA}, {"bbH", &mA}
+  // };
+  // }
 
 
-  std::string norm = "norm";
-  auto bins = cb.bin_set();
-  for (auto b : bins) {
-    auto procs = cb.cp().bin({b}).process(ch::JoinStr({signal_types["ggH"], signal_types["bbH"]})).process_set();
-    for (auto p : procs) {
-      // for (auto t : signal_types["ggH"]) {std::cout<<t<<std::endl;}
-      // for (auto t : signal_types["bbH"]) {std::cout<<t<<std::endl;}
-      std::string pdf_name = ch::BuildRooMorphing(ws, cb, b, p, *(mass_var[p]), norm, true, false, false, &demo);
-    }
-  }
-  demo.Close();
-  cb.AddWorkspace(ws);
-  cb.cp().process(ch::JoinStr({signal_types["ggH"], signal_types["bbH"]})).ExtractPdfs(cb, "htt", "$BIN_$PROCESS_morph");
+  // std::string norm = "norm";
+  // auto bins = cb.bin_set();
+  // for (auto b : bins) {
+  //   auto procs = cb.cp().bin({b}).process(ch::JoinStr({signal_types["ggH"], signal_types["bbH"]})).process_set();
+  //   for (auto p : procs) {
+  //     // for (auto t : signal_types["ggH"]) {std::cout<<t<<std::endl;}
+  //     // for (auto t : signal_types["bbH"]) {std::cout<<t<<std::endl;}
+  //     std::string pdf_name = ch::BuildRooMorphing(ws, cb, b, p, *(mass_var[p]), norm, true, false, false, &demo);
+  //   }
+  // }
+  // demo.Close();
+  // cb.AddWorkspace(ws);
+  // cb.cp().process(ch::JoinStr({signal_types["ggH"], signal_types["bbH"]})).ExtractPdfs(cb, "htt", "$BIN_$PROCESS_morph");
 
 
   // Write out datacards. Naming convention important for rest of workflow. We
   // make one directory per chn-cat, one per chn and cmb. In this code we only
   // store the individual datacards for each directory to be combined later.
   string output_prefix = "output/";
-  ch::CardWriter writer(output_prefix + output_folder + "/$TAG/$BIN.txt",
+  ch::CardWriter writer(output_prefix + output_folder + "/$TAG/$MASS/$BIN.txt",
                         output_prefix + output_folder +
                             "/$TAG/htt_input_" + "2017" + ".root");
 
   // We're not using mass as an identifier - which we need to tell the
   // CardWriter
   // otherwise it will see "*" as the mass value for every object and skip it
-  writer.SetWildcardMasses({});
+  // writer.SetWildcardMasses({});
 
   // Set verbosity
   if (verbose)
     writer.SetVerbosity(1);
 
   // Write datacards combined and per channel
-  // writer.WriteCards("cmb", cb);
+  writer.WriteCards("cmb", cb);
 
   for (auto chn : chns) {
     writer.WriteCards(chn, cb.cp().channel({chn}));

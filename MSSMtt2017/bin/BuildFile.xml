@@ -1,4 +1,5 @@
 <bin file="MorphingMSSM2017.cpp" name="MorphingMSSM2017"></bin>
+<bin file="MSSM2017.cpp" name="MSSM2017"></bin>
 <use name="root"/>
 <use name="rootmath"/>
 <use name="roofit"/>
