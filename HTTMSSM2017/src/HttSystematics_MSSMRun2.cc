@@ -53,7 +53,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   float lumi_unc = 1.023;
 
   cb.cp()
-      .channel({"tt"})
+    .channel({"tt", "mt", "et"})
       .process(mc_processes)
       .AddSyst(cb, "lumi_", "lnN", SystMap<>::init(lumi_unc));
 
@@ -66,14 +66,36 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
 
   cb.cp()
-      .channel({"tt"})
-      .process(mc_processes)
-      .AddSyst(cb, "CMS_eff_trigger_tt", "lnN", SystMap<>::init(1.10));
+    .channel({"tt", "mt", "et"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_trigger_t", "lnN", SystMap<>::init(1.10));
 
   cb.cp()
-      .channel({"tt"})
-      .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_trigger_emb_tt", "lnN", SystMap<>::init(1.10));
+    .channel({"tt", "mt", "et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_trigger_emb_t", "lnN", SystMap<>::init(1.10));
+
+
+  cb.cp()
+    .channel({"mt"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_trg_ID_iso_m", "lnN", SystMap<>::init(1.02));
+
+  cb.cp()
+    .channel({"mt"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_trg_ID_iso_emb_m", "lnN", SystMap<>::init(1.02));
+
+
+  cb.cp()
+    .channel({"et"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_trg_ID_iso_e", "lnN", SystMap<>::init(1.02));
+
+  cb.cp()
+    .channel({"et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_trg_ID_iso_emb_e", "lnN", SystMap<>::init(1.02));
 
   // ##########################################################################
   // Uncertainty: Electron, muon and tau ID efficiency
@@ -85,6 +107,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // ##########################################################################
 
   float ditauID = 1.045; //1.06 with 50% uncorrelated/correlated between MC and embedding
+  float sgtauID = 1 + (ditauID-1)/2;
 
   // MC uncorrelated uncertainty
 
@@ -93,6 +116,11 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
       .channel({"tt"})
       .process(mc_processes)
       .AddSyst(cb, "CMS_eff_mc_t_", "lnN", SystMap<>::init(ditauID));
+  // Tau ID: lt with 1 real tau
+  cb.cp()
+    .channel({"mt", "et"})
+      .process(mc_processes)
+      .AddSyst(cb, "CMS_eff_mc_l_", "lnN", SystMap<>::init(sgtauID));
 
 
   // Embedded uncorrelated uncertainty
@@ -102,6 +130,11 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
       .channel({"tt"})
       .process({"Embedded"})
       .AddSyst(cb, "CMS_eff_emb_t_", "lnN", SystMap<>::init(ditauID));
+  // Tau ID: lt with 1 real tau
+  cb.cp()
+    .channel({"mt", "et"})
+      .process({"Embedded"})
+      .AddSyst(cb, "CMS_eff_emb_l_", "lnN", SystMap<>::init(sgtauID));
 
 
 
@@ -112,6 +145,11 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
       .channel({"tt"})
       .process(JoinStr({mc_processes, {"Embedded"}}))
       .AddSyst(cb, "CMS_eff_t_", "lnN", SystMap<>::init(ditauID));
+  // Tau ID: lt with 1 real tau
+  cb.cp()
+    .channel({"mt", "et"})
+      .process(JoinStr({mc_processes, {"Embedded"}}))
+      .AddSyst(cb, "CMS_eff_l_", "lnN", SystMap<>::init(sgtauID));
 
 
   // ##########################################################################
@@ -122,7 +160,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // ##########################################################################
 
   cb.cp()
-      .channel({"tt"})
+    .channel({"tt", "mt", "et"})
       .process(mc_processes)
       .AddSyst(cb, "Btagging_", "shape", SystMap<>::init(1.00));
 
@@ -142,99 +180,71 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // MC uncorrelated uncertainty
 
   cb.cp()
-      .channel({"tt"})
-    .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
+      .channel({"tt", "mt", "et"})
+    .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}}))
       .AddSyst(cb, "TES_HadronicTau_1prong0pi0_mc_", "shape", SystMap<>::init(0.5));
 
   cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
+      .channel({"tt", "mt", "et"})
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}}))
       .AddSyst(cb, "TES_HadronicTau_1prong1pi0_mc_", "shape",
                SystMap<>::init(0.5));
 
   cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
+      .channel({"tt", "mt", "et"})
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}}))
       .AddSyst(cb, "TES_HadronicTau_3prong0pi0_mc_", "shape", SystMap<>::init(0.5));
 
-  cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
-      .AddSyst(cb, "TES_promptMuon_1prong0pi0_mc_", "shape", SystMap<>::init(0.5));
-
-  cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
-      .AddSyst(cb, "TES_promptEle_1prong0pi0_mc_", "shape", SystMap<>::init(0.5));
-
-  cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}}))
-      .AddSyst(cb, "TES_promptEle_1prong1pi0_mc_", "shape", SystMap<>::init(0.5));
 
   // Embedded uncorrelated uncertainty
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"Embedded"})
       .AddSyst(cb, "TES_HadronicTau_1prong0pi0_emb_", "shape", SystMap<>::init(0.5));
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"Embedded"})
       .AddSyst(cb, "TES_HadronicTau_1prong1pi0_emb_", "shape", SystMap<>::init(0.5));
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"Embedded"})
       .AddSyst(cb, "TES_HadronicTau_3prong0pi0_emb_", "shape", SystMap<>::init(0.5));
 
-  cb.cp()
-      .channel({"tt"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_promptMuon_1prong0pi0_emb_", "shape", SystMap<>::init(0.5));
-
-  cb.cp()
-      .channel({"tt"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_promptEle_1prong0pi0_emb_", "shape", SystMap<>::init(0.5));
-
-  cb.cp()
-      .channel({"tt"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_promptEle_1prong1pi0_emb_", "shape", SystMap<>::init(0.5));
 
   // MC + embedded correlated uncertainty
 
   cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
+      .channel({"tt", "mt", "et"})
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}, {"Embedded"}}))
       .AddSyst(cb, "TES_HadronicTau_1prong0pi0_", "shape", SystMap<>::init(0.5));
 
   cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
+      .channel({"tt", "mt", "et"})
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}, {"Embedded"}}))
       .AddSyst(cb, "TES_HadronicTau_1prong1pi0_", "shape", SystMap<>::init(0.5));
 
   cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
+      .channel({"tt", "mt", "et"})
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}, {"Embedded"}}))
       .AddSyst(cb, "TES_HadronicTau_3prong0pi0_", "shape", SystMap<>::init(0.5));
 
   cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
-      .AddSyst(cb, "TES_promptMuon_1prong0pi0_", "shape", SystMap<>::init(0.5));
+      .channel({"tt", "mt", "et"})
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}}))
+      .AddSyst(cb, "TES_promptMuon_1prong0pi0_", "shape", SystMap<>::init(1.));
 
   cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
-      .AddSyst(cb, "TES_promptEle_1prong0pi0_", "shape", SystMap<>::init(0.5));
+      .channel({"tt", "mt", "et"})
+      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}}))
+      .AddSyst(cb, "TES_promptEle_1prong0pi0_", "shape", SystMap<>::init(1.));
 
   cb.cp()
-      .channel({"tt"})
-      .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL", "jetFakes"}, {"Embedded"}}))
-      .AddSyst(cb, "TES_promptEle_1prong1pi0_", "shape", SystMap<>::init(0.5));
+      .channel({"tt", "mt", "et"})
+    .process(JoinStr({signals, {"ZTT", "TTT", "TTL", "VVT", "VVL"}}))
+      .AddSyst(cb, "TES_promptEle_1prong1pi0_", "shape", SystMap<>::init(1.));
 
   // ##########################################################################
   // Uncertainty: Jet energy scale
@@ -247,26 +257,26 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // Regional JES
   // uncorrelated between eras
   cb.cp()
-    .channel({"tt"})
+    .channel({"tt", "mt", "et"})
     .process(mc_processes)
     .AddSyst(cb, "CMS_scale_j_eta0to3_13TeV_", "shape", SystMap<>::init(1.00));
   
   cb.cp()
-    .channel({"tt"})
+    .channel({"tt", "mt", "et"})
     .process(mc_processes)
     .AddSyst(cb, "CMS_scale_j_eta0to5_13Tev_", "shape", SystMap<>::init(1.00));
   
   cb.cp()
-    .channel({"tt"})
+    .channel({"tt", "mt", "et"})
     .process(mc_processes)
     .AddSyst(cb, "CMS_scale_j_eta3to5_13TeV_", "shape", SystMap<>::init(1.00));
   
   cb.cp()
-    .channel({"tt"})
+    .channel({"tt", "mt", "et"})
     .process(mc_processes)
     .AddSyst(cb, "CMS_scale_j_RelativeBal_13TeV_", "shape", SystMap<>::init(1.00));
   cb.cp()
-    .channel({"tt"})
+    .channel({"tt", "mt", "et"})
     .process(mc_processes)
     .AddSyst(cb, "CMS_scale_j_RelativeSample_13TeV_", "shape", SystMap<>::init(1.00));
 
@@ -279,15 +289,15 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // ##########################################################################
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"ZTT", "TT", "TTT", "TTL", "TTJ", "W", "ZJ", "ZL", "VV", "VVT", "VVL", "VVJ", "ST"})  //Z and W processes are only included due to the EWK fraction. Make sure that there is no contribution to the shift from the DY or Wjets samples.
       .AddSyst(cb, "METunclustered_", "shape", SystMap<>::init(1.00));
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process(JoinStr({signals, {"ZTT", "ZL", "ZJ", "W"}}))
       .AddSyst(cb, "METrecoil_response_", "shape", SystMap<>::init(1.00));
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
      .process(JoinStr({signals,{"ZTT", "ZL", "ZJ", "W"}}))
       .AddSyst(cb, "METrecoil_resolution_", "shape", SystMap<>::init(1.00));
 
@@ -305,25 +315,25 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   // VV
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"VVT", "VVJ", "VVL", "VV", "ST"})
       .AddSyst(cb, "CMS_htt_vvXsec", "lnN", SystMap<>::init(1.05));
 
   // TT
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"TTT", "TTL", "TTJ", "TT"})
       .AddSyst(cb, "CMS_htt_tjXsec", "lnN", SystMap<>::init(1.06));
 
   // W
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"W"})
       .AddSyst(cb, "CMS_htt_wjXsec", "lnN", SystMap<>::init(1.04));
 
   // Z
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"ZTT", "ZL", "ZJ"})
       .AddSyst(cb, "CMS_htt_zjXsec", "lnN", SystMap<>::init(1.04));
 
@@ -336,7 +346,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // ##########################################################################
   // is this same as DY pt reweighting?
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"ZTT", "ZL", "ZJ"})
       .AddSyst(cb, "DY_pT_reweighting_", "shape", SystMap<>::init(1.0));
 
@@ -348,7 +358,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // ##########################################################################
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"TTT", "TTL", "TTJ", "TT"})
       .AddSyst(cb, "top_pT_reweighting_", "shape", SystMap<>::init(1.00));
 
@@ -360,40 +370,76 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // - FIXME: References?
   // ##########################################################################
 
-  cb.cp()
-      .channel({"tt"})
-      .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_syst_", "shape", SystMap<>::init(1.00));
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_qcd_syst_", "shape", SystMap<>::init(1.00));
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
+      .AddSyst(cb, "ff_qcd_syst_", "lnN", SystMap<>::init(1.03));
+
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
+
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
+      .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "lnN", SystMap<>::init(1.016));
+
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_w_syst_", "shape", SystMap<>::init(1.00));
+      .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "lnN", SystMap<>::init(1.016));
+
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_w_syst_", "shape", SystMap<>::init(1.00));
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_tt_syst_", "shape", SystMap<>::init(1.00));
+      .AddSyst(cb, "ff_w_syst_", "lnN", SystMap<>::init(1.07));
+
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_tt_syst_", "shape", SystMap<>::init(1.00));
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_w_frac_syst_", "shape", SystMap<>::init(1.00));
+      .AddSyst(cb, "ff_tt_syst_", "lnN", SystMap<>::init(1.013));
+
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_w_frac_syst_", "shape", SystMap<>::init(1.00));
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_tt_frac_syst_", "shape", SystMap<>::init(1.00));
+      .AddSyst(cb, "ff_w_frac_syst_", "lnN", SystMap<>::init(1.02));
+
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_tt_frac_syst_", "shape", SystMap<>::init(1.00));
+
+  cb.cp()
+      .channel({"tt", "mt", "et"})
+      .process({"jetFakes"})
+      .AddSyst(cb, "ff_tt_frac_syst_", "lnN", SystMap<>::init(1.011));
 
   // ##########################################################################
   // Uncertainty: Theory uncertainties
@@ -526,10 +572,10 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   //     .AddSyst(cb, "QCDScale_ggHWW", "lnN", SystMap<>::init(1.039));
   // }
 
-  cb.cp()
-    .channel({"tt"})
-    .process({signals})
-    .AddSyst(cb, "arbitrary_flat_unc", "lnN", SystMap<>::init(1.10));
+  // cb.cp()
+  //   .channel({"tt"})
+  //   .process({signals})
+  //   .AddSyst(cb, "arbitrary_flat_unc", "lnN", SystMap<>::init(1.10));
 
   // ##########################################################################
   // Uncertainty: Embedded events
@@ -540,24 +586,24 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   // Embedded Normalization: No Lumi, Zjxsec information used, instead derived from data using dimuon selection efficiency
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"Embedded"})
       .AddSyst(cb, "CMS_htt_doublemutrg_", "lnN", SystMap<>::init(1.04));
 
   // TTbar contamination in embedded events: 10% shape uncertainty of assumed ttbar->tautau event shape
   // cb.cp()
-  //   .channel({"tt" })
+  //   .channel({"tt", "mt", "et"})
   //   .process({"Embedded"})
   //   .AddSyst(cb, "CMS_htt_emb_ttbar_", "shape", SystMap<>::init(1.00));
 
   // Uncertainty of hadronic tau track efficiency correction
   cb.cp()
-    .channel({"tt"})
+    .channel({"tt", "mt", "et"})
     .process({"Embedded"})
     .AddSyst(cb, "Embedding_tracking_3prong_", "shape", SystMap<>::init(1.00));
 
   cb.cp()
-    .channel({"tt"})
+    .channel({"tt", "mt", "et"})
     .process({"Embedded"})
     .AddSyst(cb, "Embedding_tracking_1prong_", "shape", SystMap<>::init(1.00));
 
@@ -569,63 +615,75 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // - FIXME: add 2017 norm uncertainties, and properly correlate across years
   // ##########################################################################
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
       .AddSyst(cb, "ff_norm_stat_$BIN", "lnN", SystMap<channel, bin_id>::init
   	       ({"tt"}, {8},  1.023) //btag
   	       ({"tt"}, {9}, 1.028) //nobtag
+  	       ({"mt", "et"}, {8},  1.023) //btag tight
+  	       ({"mt", "et"}, {9}, 1.028) //nobtag tight
+  	       ({"mt", "et"}, {10},  1.023) //btag loose
+  	       ({"mt", "et"}, {11}, 1.028) //nobtag loose
   	       );
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
       .AddSyst(cb, "ff_norm_syst_$BIN", "lnN", SystMap<channel, bin_id>::init
   	       ({"tt"}, {8},  1.099) //btag
   	       ({"tt"}, {9}, 1.100) //nobtag
+  	       ({"mt", "et"}, {8},  1.099) //btag tight
+  	       ({"mt", "et"}, {9}, 1.100) //nobtag tight
+  	       ({"mt", "et"}, {10},  1.099) //btag loose
+  	       ({"mt", "et"}, {11}, 1.100) //nobtag loose
   	       );
 
   cb.cp()
-      .channel({"tt"})
+      .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
       .AddSyst(cb, "ff_sub_syst_$BIN", "lnN", SystMap<channel, bin_id>::init
   	       ({"tt"}, {8},  1.03) //btag
   	       ({"tt"}, {9}, 1.03) //nobtag
+  	       ({"mt", "et"}, {8},  1.03) //btag tight
+  	       ({"mt", "et"}, {9}, 1.03) //nobtag tight
+  	       ({"mt", "et"}, {10},  1.03) //btag loose
+  	       ({"mt", "et"}, {11}, 1.03) //nobtag loose
   	       );
 
-  cb.cp()
-      .channel({"tt"})
-      .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
-  cb.cp()
-      .channel({"tt"})
-      .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
 
-  // Shape syst. of different contr
-  cb.cp()
-      .channel({"tt"})
-      .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_syst_", "shape", SystMap<>::init(1.00));
+  // // Shape syst. of different contr
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_qcd_syst_", "shape", SystMap<>::init(1.00));
 
-  // Shape syst. in tautau due to using QCD FF also for W / tt
-  cb.cp()
-      .channel({"tt"})
-      .process({"jetFakes"})
-      .AddSyst(cb, "ff_w_syst_", "shape", SystMap<>::init(1.00));
-  cb.cp()
-      .channel({"tt"})
-      .process({"jetFakes"})
-      .AddSyst(cb, "ff_tt_syst_", "shape", SystMap<>::init(1.00));
+  // // Shape syst. in tautau due to using QCD FF also for W / tt
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_w_syst_", "shape", SystMap<>::init(1.00));
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_tt_syst_", "shape", SystMap<>::init(1.00));
 
-  cb.cp()
-      .channel({"tt"})
-      .process({"jetFakes"})
-      .AddSyst(cb, "ff_w_frac_syst_", "shape", SystMap<>::init(1.00));
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_w_frac_syst_", "shape", SystMap<>::init(1.00));
 
-  cb.cp()
-      .channel({"tt"})
-      .process({"jetFakes"})
-      .AddSyst(cb, "ff_tt_frac_syst_", "shape", SystMap<>::init(1.00));
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_tt_frac_syst_", "shape", SystMap<>::init(1.00));
   // //below: jetFakes norm uncertainties. Current values are for 2016, which are probably a good approx. for 2017. To be updated.
 
   // // Stat. norm (uncorrelated across years)
