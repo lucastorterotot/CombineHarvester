@@ -193,15 +193,15 @@ int main(int argc, char** argv) {
   map<string, Categories> cats;
   if(categories == "HTTMSSM"){
     cats["tt"] = {
-      // { 8, "tt_nobtag"},
-      // { 9, "tt_btag"},
-      { 7, "tt_inclusive"},
+       { 8, "tt_nobtag"},
+       { 9, "tt_btag"},
+      // { 7, "tt_inclusive"},
     };
     cats["mt"] = {
-      // {8, "mt_nobtag_tight"},
-      // {9, "mt_btag_tight"},
-      // {10, "mt_nobtag_loosemt"},
-      // {11, "mt_btag_loosemt"},
+      {8, "mt_nobtag_tight"},
+      {9, "mt_btag_tight"},
+      {10, "mt_nobtag_loosemt"},
+      {11, "mt_btag_loosemt"},
       { 7, "mt_inclusive"},
     };
     cats["et"] = {
@@ -228,8 +228,7 @@ int main(int argc, char** argv) {
   // Specify signal processes and masses
   vector<string> sig_procs = {"ggH","bbH"};
 
-  vector<string> masses = {"100","110","120","130"};//,"140","180","200","250","300","400","450","600","700","800","900","1200","1400","1500","2300","2600","2900","3200"};
-  // vector<string> masses = {"90","100","110","120","130","140","160","180", "200", "250", "350", "400", "450", "500", "600", "700", "800", "900","1000","1200","1400","1600","1800","2000","2300","2600","2900","3200"};
+  vector<string> masses = {"80","90","110","120","130","180","250","300","400","450","600","800","900","1200","1400","1800","2000","2300","2600","2900"};//{"110","120","130","180","250","300","400","450","600","800","900","1200","1400","2300","2600","2900"};//add 1800 for amcatnlo 80 and 90 empty!//{"100","110","120","130","140","180","200","250","300","400","450","600","700","800","900","1200","1400","1500","2300","2600","2900","3200"};,"800","450",
 
   map<string, VString> signal_types = {
     {"ggH", {"ggH"}},
