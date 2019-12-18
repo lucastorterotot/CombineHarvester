@@ -220,8 +220,8 @@ for src in args.input:
     # limit.json => Draw as full obs + exp limit band
     if len(splitsrc) == 1:
         if len(args.input)>1:
-            if src is args.input[1]:
-                graph_sets.append(plot.StandardLimitsFromJSONFile(file, ['exp0']))
+            #if src is args.input[1]:
+            graph_sets.append(plot.StandardLimitsFromJSONFile(file, ['exp0']))
         else:
             graph_sets.append(plot.StandardLimitsFromJSONFile(file, args.show.split(',')))
         if axis is None:
