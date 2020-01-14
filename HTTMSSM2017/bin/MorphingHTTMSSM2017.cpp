@@ -172,6 +172,9 @@ int main(int argc, char** argv) {
     bkgs = JoinStr({bkgs,{"jetFakes"}});
   }
 
+  if ( chan.find("tt") == std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVL"), bkgs.end());
+  if ( chan.find("tt") == std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTL"), bkgs.end());
+
   std::cout << "[INFO] Considering the following processes:\n";
   if (chan.find("tt") != std::string::npos) {
     std::cout << "For tt channels : \n";
