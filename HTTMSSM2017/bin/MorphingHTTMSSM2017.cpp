@@ -198,10 +198,10 @@ int main(int argc, char** argv) {
       // { 7, "tt_inclusive"},
     };
     cats["mt"] = {
-      {8, "mt_nobtag_tight"},
-      {9, "mt_btag_tight"},
-      {10, "mt_nobtag_loosemt"},
-      {11, "mt_btag_loosemt"},
+      // {8, "mt_nobtag_tight"},
+      // {9, "mt_btag_tight"},
+      // {10, "mt_nobtag_loosemt"},
+      // {11, "mt_btag_loosemt"},
       { 7, "mt_inclusive"},
     };
     cats["et"] = {
