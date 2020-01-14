@@ -62,18 +62,46 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // References:
   // Notes:
   // - FIXME: References?
+  // - cross trigger unc as shape?
   // ##########################################################################
-
-
-  cb.cp()
-    .channel({"tt", "mt", "et"})
-    .process(mc_processes)
-    .AddSyst(cb, "CMS_eff_trigger_t", "lnN", SystMap<>::init(1.10));
 
   cb.cp()
     .channel({"tt", "mt", "et"})
     .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_trigger_mu_emb", "lnN", SystMap<>::init(1.04));
+
+
+  cb.cp()
+    .channel({"tt"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_trigger_t", "lnN", SystMap<>::init(1.10));
+
+  cb.cp()
+    .channel({"tt"})
+    .process({"Embedded"})
     .AddSyst(cb, "CMS_eff_trigger_emb_t", "lnN", SystMap<>::init(1.10));
+
+
+  cb.cp()
+    .channel({"mt", "et"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_trigger", "lnN", SystMap<>::init(1.02));
+
+  cb.cp()
+    .channel({"mt", "et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_trigger_emb", "lnN", SystMap<>::init(1.02));
+
+
+  cb.cp()
+    .channel({"mt", "et"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_crosstrigger", "lnN", SystMap<>::init(1.054));
+
+  cb.cp()
+    .channel({"mt", "et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_crosstrigger_emb", "lnN", SystMap<>::init(1.054));
 
 
   cb.cp()
