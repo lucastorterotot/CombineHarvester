@@ -157,20 +157,20 @@ int main(int argc, char** argv) {
   VString bkgs, bkgs_em;
   bkgs = {"W", "ZTT", "QCD", "ZL", "ZJ", "TTT", "TTL", "TTJ", "VVJ", "VVT", "VVL"};
   if(embedding){
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZTT"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTT"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVT"), bkgs.end());
+    if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZTT"), bkgs.end());
+    if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTT"), bkgs.end());
+    if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVT"), bkgs.end());
     bkgs = JoinStr({bkgs,{"Embedded"}});
   }
   if(jetfakes){
     bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "QCD"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "W"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVJ"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTJ"), bkgs.end());
-    bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZJ"), bkgs.end());
+    if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "W"), bkgs.end());
+    if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVJ"), bkgs.end());
+    if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTJ"), bkgs.end());
+    if ( chan.find("mt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZJ"), bkgs.end());
+    if ( chan.find("et") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZJ"), bkgs.end());
     bkgs = JoinStr({bkgs,{"jetFakes"}});
   }
-  // when jetfakes and embedded processes are : ZL, TTL, VVL
 
   std::cout << "[INFO] Considering the following processes:\n";
   if (chan.find("tt") != std::string::npos) {
