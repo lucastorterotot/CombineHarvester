@@ -196,6 +196,15 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
 
   // ##########################################################################
+  // Uncertainty: Electron energy scale
+  // References:
+  // Notes:
+  // - FIXME: AN 2018/255
+  // ##########################################################################
+
+
+
+  // ##########################################################################
   // Uncertainty: Tau energy scale
   // References:
   // Notes:
