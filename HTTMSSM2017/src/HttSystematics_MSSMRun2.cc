@@ -85,45 +85,47 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   cb.cp()
     .channel({"mt", "et"})
     .process(mc_processes)
-    .AddSyst(cb, "CMS_eff_trigger", "lnN", SystMap<>::init(1.02));
+    .AddSyst(cb, "CMS_eff_trigger_l", "lnN", SystMap<>::init(1.02));
 
   cb.cp()
     .channel({"mt", "et"})
     .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_trigger_emb", "lnN", SystMap<>::init(1.02));
+    .AddSyst(cb, "CMS_eff_trigger_l_emb", "lnN", SystMap<>::init(1.02));
 
 
   cb.cp()
     .channel({"mt", "et"})
     .process(mc_processes)
-    .AddSyst(cb, "CMS_eff_crosstrigger", "lnN", SystMap<>::init(1.054));
+    .AddSyst(cb, "CMS_eff_crosstrigger_l", "lnN", SystMap<>::init(1.054));
 
   cb.cp()
     .channel({"mt", "et"})
     .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_crosstrigger_emb", "lnN", SystMap<>::init(1.054));
+    .AddSyst(cb, "CMS_eff_crosstrigger_l_emb", "lnN", SystMap<>::init(1.054));
 
-
-  cb.cp()
-    .channel({"mt"})
-    .process(mc_processes)
-    .AddSyst(cb, "CMS_eff_trg_ID_iso_m", "lnN", SystMap<>::init(1.02));
+  // ##########################################################################
+  // Uncertainty: e -> tauh, mu ->tauh fake rate
+  // ##########################################################################
 
   cb.cp()
-    .channel({"mt"})
-    .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_trg_ID_iso_emb_m", "lnN", SystMap<>::init(1.02));
-
+    .channel({"tt"})
+    .process({"ZL"})
+    .AddSyst(cb, "ele_to_tauh_fake", "lnN", SystMap<>::init(1.03)); // 16%?
 
   cb.cp()
     .channel({"et"})
-    .process(mc_processes)
-    .AddSyst(cb, "CMS_eff_trg_ID_iso_e", "lnN", SystMap<>::init(1.02));
+    .process({"ZL"})
+    .AddSyst(cb, "ele_to_tauh_fake", "lnN", SystMap<>::init(1.11)); // 16%?
 
   cb.cp()
-    .channel({"et"})
-    .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_trg_ID_iso_emb_e", "lnN", SystMap<>::init(1.02));
+    .channel({"tt"})
+    .process({"ZL"})
+    .AddSyst(cb, "mu_to_tauh_fake", "lnN", SystMap<>::init(1.05)); // 26%?
+
+  cb.cp()
+    .channel({"mt"})
+    .process({"ZL"})
+    .AddSyst(cb, "mu_to_tauh_fake", "lnN", SystMap<>::init(1.12)); // 26%?
 
   // ##########################################################################
   // Uncertainty: Electron, muon and tau ID efficiency
@@ -136,6 +138,8 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   float ditauID = 1.045; //1.06 with 50% uncorrelated/correlated between MC and embedding
   float sgtauID = 1 + (ditauID-1)/2;
+  float eleID = 1.02;
+  float muID = 1.02;
 
   // MC uncorrelated uncertainty
 
@@ -149,6 +153,16 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
     .channel({"mt", "et"})
       .process(mc_processes)
       .AddSyst(cb, "CMS_eff_mc_l_", "lnN", SystMap<>::init(sgtauID));
+  // muon ID
+  cb.cp()
+    .channel({"mt"})
+      .process(mc_processes)
+      .AddSyst(cb, "CMS_eff_mc_muID_", "lnN", SystMap<>::init(muID));
+  // ele ID
+  cb.cp()
+    .channel({"et"})
+      .process(mc_processes)
+      .AddSyst(cb, "CMS_eff_mc_eleID_", "lnN", SystMap<>::init(eleID));
 
 
   // Embedded uncorrelated uncertainty
@@ -163,6 +177,16 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
     .channel({"mt", "et"})
       .process({"Embedded"})
       .AddSyst(cb, "CMS_eff_emb_l_", "lnN", SystMap<>::init(sgtauID));
+  // muon ID
+  cb.cp()
+    .channel({"mt"})
+      .process(mc_processes)
+      .AddSyst(cb, "CMS_eff_emb_muID_", "lnN", SystMap<>::init(muID));
+  // ele ID
+  cb.cp()
+    .channel({"et"})
+      .process(mc_processes)
+      .AddSyst(cb, "CMS_eff_emb_eleID_", "lnN", SystMap<>::init(eleID));
 
 
 
@@ -178,6 +202,16 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
     .channel({"mt", "et"})
       .process(JoinStr({mc_processes, {"Embedded"}}))
       .AddSyst(cb, "CMS_eff_l_", "lnN", SystMap<>::init(sgtauID));
+  // muon ID
+  cb.cp()
+    .channel({"mt"})
+      .process(JoinStr({mc_processes, {"Embedded"}}))
+      .AddSyst(cb, "CMS_eff_muID_", "lnN", SystMap<>::init(muID));
+  // ele ID
+  cb.cp()
+    .channel({"et"})
+      .process(JoinStr({mc_processes, {"Embedded"}}))
+      .AddSyst(cb, "CMS_eff_eleID_", "lnN", SystMap<>::init(eleID));
 
 
   // ##########################################################################
@@ -200,6 +234,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // References:
   // Notes:
   // - FIXME: AN 2018/255
+  // - FIXME: add systematic process for heppy!
   // ##########################################################################
 
 
@@ -326,7 +361,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   cb.cp()
       .channel({"tt", "mt", "et"})
-      .process({"ZTT", "TT", "TTT", "TTL", "TTJ", "W", "ZJ", "ZL", "VV", "VVT", "VVL", "VVJ", "ST"})  //Z and W processes are only included due to the EWK fraction. Make sure that there is no contribution to the shift from the DY or Wjets samples.
+      .process({"TT", "TTT", "TTL", "TTJ", "VV", "VVT", "VVL", "VVJ", "ST"})
       .AddSyst(cb, "METunclustered_", "shape", SystMap<>::init(1.00));
   cb.cp()
       .channel({"tt", "mt", "et"})
@@ -406,76 +441,88 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // - FIXME: References?
   // ##########################################################################
 
+  cb.cp()
+      .channel({"tt", "mt", "et"})
+      .process({"jetFakes"})
+      .AddSyst(cb, "ff_qcd_syst_", "shape", SystMap<>::init(1.00));
   // cb.cp()
   //     .channel({"tt", "mt", "et"})
   //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_qcd_syst_", "shape", SystMap<>::init(1.00));
+  //     .AddSyst(cb, "ff_qcd_syst_", "lnN", SystMap<>::init(1.03));
+
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"jetFakes"})
+    .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
+  // cb.cp()
+  //     .channel({"tt", "mt", "et"})
+  //     .process({"jetFakes"})
+  //     .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "lnN", SystMap<>::init(1.016));
 
   cb.cp()
       .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_syst_", "lnN", SystMap<>::init(1.03));
-
+      .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
   // cb.cp()
   //     .channel({"tt", "mt", "et"})
   //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
-
+  //     .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "lnN", SystMap<>::init(1.016));
 
   cb.cp()
       .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "lnN", SystMap<>::init(1.016));
-
+      .AddSyst(cb, "ff_w_syst_", "shape", SystMap<>::init(1.00));
   // cb.cp()
   //     .channel({"tt", "mt", "et"})
   //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
+  //     .AddSyst(cb, "ff_w_syst_", "lnN", SystMap<>::init(1.07));
 
   cb.cp()
       .channel({"tt", "mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "lnN", SystMap<>::init(1.016));
-
+      .AddSyst(cb, "ff_tt_syst_", "shape", SystMap<>::init(1.00));
   // cb.cp()
   //     .channel({"tt", "mt", "et"})
   //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_w_syst_", "shape", SystMap<>::init(1.00));
+  //     .AddSyst(cb, "ff_tt_syst_", "lnN", SystMap<>::init(1.013));
 
   cb.cp()
-      .channel({"tt", "mt", "et"})
+      .channel({"tt"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_w_syst_", "lnN", SystMap<>::init(1.07));
-
+      .AddSyst(cb, "ff_w_frac_syst_", "shape", SystMap<>::init(1.00));
   // cb.cp()
-  //     .channel({"tt", "mt", "et"})
+  //     .channel({"tt"})
   //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_tt_syst_", "shape", SystMap<>::init(1.00));
+  //     .AddSyst(cb, "ff_w_frac_syst_", "lnN", SystMap<>::init(1.02));
 
   cb.cp()
-      .channel({"tt", "mt", "et"})
+    .channel({"mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_tt_syst_", "lnN", SystMap<>::init(1.013));
+      .AddSyst(cb, "ff_w_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
 
+  cb.cp()
+    .channel({"mt", "et"})
+      .process({"jetFakes"})
+      .AddSyst(cb, "ff_w_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
+
+  cb.cp()
+      .channel({"tt"})
+      .process({"jetFakes"})
+      .AddSyst(cb, "ff_tt_frac_syst_", "shape", SystMap<>::init(1.00));
   // cb.cp()
-  //     .channel({"tt", "mt", "et"})
+  //     .channel({"tt"})
   //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_w_frac_syst_", "shape", SystMap<>::init(1.00));
+  //     .AddSyst(cb, "ff_tt_frac_syst_", "lnN", SystMap<>::init(1.011));
 
   cb.cp()
-      .channel({"tt", "mt", "et"})
+    .channel({"mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_w_frac_syst_", "lnN", SystMap<>::init(1.02));
-
-  // cb.cp()
-  //     .channel({"tt", "mt", "et"})
-  //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_tt_frac_syst_", "shape", SystMap<>::init(1.00));
+      .AddSyst(cb, "ff_tt_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
 
   cb.cp()
-      .channel({"tt", "mt", "et"})
+    .channel({"mt", "et"})
       .process({"jetFakes"})
-      .AddSyst(cb, "ff_tt_frac_syst_", "lnN", SystMap<>::init(1.011));
+      .AddSyst(cb, "ff_tt_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
 
   // ##########################################################################
   // Uncertainty: Theory uncertainties
