@@ -152,23 +152,31 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // - FIXME: References?
   // ##########################################################################
 
-  float ditauID = 1.045; //1.06 with 50% uncorrelated/correlated between MC and embedding
-  float sgtauID = 1 + (ditauID-1)/2;
+  float tauID_channel_correlated = 1.027;
+  float tauID_channel_uncorrelated = 1.012;
   float eleID = 1.02;
   float muID = 1.02;
 
   // MC uncorrelated uncertainty
 
-  // Tau ID: tt with 2 real taus
+  // Tau ID channel correlated
   cb.cp()
-      .channel({"tt"})
+    .channel({"tt", "mt", "et"})
       .process(mc_processes)
-      .AddSyst(cb, "CMS_eff_mc_t_", "lnN", SystMap<>::init(ditauID));
-  // Tau ID: lt with 1 real tau
+      .AddSyst(cb, "CMS_eff_mc_chan_cor_tID_", "lnN", SystMap<>::init(tauID_channel_correlated));
+  // Tau ID channel uncorrelated
   cb.cp()
-    .channel({"mt", "et"})
+    .channel({"tt"})
       .process(mc_processes)
-      .AddSyst(cb, "CMS_eff_mc_l_", "lnN", SystMap<>::init(sgtauID));
+      .AddSyst(cb, "CMS_eff_mc_tt_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
+  cb.cp()
+    .channel({"mt"})
+      .process(mc_processes)
+      .AddSyst(cb, "CMS_eff_mc_mt_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
+  cb.cp()
+    .channel({"et"})
+      .process(mc_processes)
+      .AddSyst(cb, "CMS_eff_mc_et_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
   // muon ID
   cb.cp()
     .channel({"mt"})
@@ -183,41 +191,57 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   // Embedded uncorrelated uncertainty
 
-  // Tau ID: tt with 2 real taus
+  // Tau ID channel correlated
   cb.cp()
-      .channel({"tt"})
+    .channel({"tt", "mt", "et"})
       .process({"Embedded"})
-      .AddSyst(cb, "CMS_eff_emb_t_", "lnN", SystMap<>::init(ditauID));
-  // Tau ID: lt with 1 real tau
+      .AddSyst(cb, "CMS_eff_emb_chan_cor_tID_", "lnN", SystMap<>::init(tauID_channel_correlated));
+  // Tau ID channel uncorrelated
   cb.cp()
-    .channel({"mt", "et"})
+    .channel({"tt"})
       .process({"Embedded"})
-      .AddSyst(cb, "CMS_eff_emb_l_", "lnN", SystMap<>::init(sgtauID));
+      .AddSyst(cb, "CMS_eff_emb_tt_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
+  cb.cp()
+    .channel({"mt"})
+      .process({"Embedded"})
+      .AddSyst(cb, "CMS_eff_emb_mt_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
+  cb.cp()
+    .channel({"et"})
+      .process({"Embedded"})
+      .AddSyst(cb, "CMS_eff_emb_et_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
   // muon ID
   cb.cp()
     .channel({"mt"})
-      .process(mc_processes)
+      .process({"Embedded"})
       .AddSyst(cb, "CMS_eff_emb_muID_", "lnN", SystMap<>::init(muID));
   // ele ID
   cb.cp()
     .channel({"et"})
-      .process(mc_processes)
+      .process({"Embedded"})
       .AddSyst(cb, "CMS_eff_emb_eleID_", "lnN", SystMap<>::init(eleID));
 
 
 
   // MC + embedded correlated uncertainty
 
-  // Tau ID: tt with 2 real taus
+  // Tau ID channel correlated
   cb.cp()
-      .channel({"tt"})
+    .channel({"tt", "mt", "et"})
       .process(JoinStr({mc_processes, {"Embedded"}}))
-      .AddSyst(cb, "CMS_eff_t_", "lnN", SystMap<>::init(ditauID));
-  // Tau ID: lt with 1 real tau
+      .AddSyst(cb, "CMS_eff_chan_cor_tID_", "lnN", SystMap<>::init(tauID_channel_correlated));
+  // Tau ID channel uncorrelated
   cb.cp()
-    .channel({"mt", "et"})
+    .channel({"tt"})
       .process(JoinStr({mc_processes, {"Embedded"}}))
-      .AddSyst(cb, "CMS_eff_l_", "lnN", SystMap<>::init(sgtauID));
+      .AddSyst(cb, "CMS_eff_tt_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
+  cb.cp()
+    .channel({"mt"})
+      .process(JoinStr({mc_processes, {"Embedded"}}))
+      .AddSyst(cb, "CMS_eff_mt_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
+  cb.cp()
+    .channel({"et"})
+      .process(JoinStr({mc_processes, {"Embedded"}}))
+      .AddSyst(cb, "CMS_eff_et_chan_tID_", "lnN", SystMap<>::init(tauID_channel_uncorrelated));
   // muon ID
   cb.cp()
     .channel({"mt"})
