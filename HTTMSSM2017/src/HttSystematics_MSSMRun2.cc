@@ -65,46 +65,62 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // - cross trigger unc as shape?
   // ##########################################################################
 
+  float trg_unc_emb = 1.04;
+  float trg_unc_tt = 1.10;
+  float trg_unc_lt = 1.02;
+  float xtrg_unc_lt = 1.054;
+
   cb.cp()
     .channel({"tt", "mt", "et"})
     .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_trigger_mu_emb", "lnN", SystMap<>::init(1.04));
-
-
-  cb.cp()
-    .channel({"tt"})
-    .process(mc_processes)
-    .AddSyst(cb, "CMS_eff_trigger_t", "lnN", SystMap<>::init(1.10));
+    .AddSyst(cb, "CMS_eff_trigger_dblmu_emb", "lnN", SystMap<>::init(trg_unc_emb));
 
   cb.cp()
     .channel({"tt"})
-    .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_trigger_emb_t", "lnN", SystMap<>::init(1.10));
-
-
-  cb.cp()
-    .channel({"mt", "et"})
     .process(mc_processes)
-    .AddSyst(cb, "CMS_eff_trigger_l", "lnN", SystMap<>::init(1.02));
-
+    .AddSyst(cb, "CMS_eff_trigger_t", "lnN", SystMap<>::init(trg_unc_tt));
   cb.cp()
-    .channel({"mt", "et"})
+    .channel({"tt"})
     .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_trigger_l_emb", "lnN", SystMap<>::init(1.02));
-
+    .AddSyst(cb, "CMS_eff_trigger_emb_t", "lnN", SystMap<>::init(trg_unc_tt));
 
   cb.cp()
-    .channel({"mt", "et"})
+    .channel({"mt"})
     .process(mc_processes)
-    .AddSyst(cb, "CMS_eff_crosstrigger_l", "lnN", SystMap<>::init(1.054));
+    .AddSyst(cb, "CMS_eff_trigger_m", "lnN", SystMap<>::init(trg_unc_lt));
+  cb.cp()
+    .channel({"mt"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_trigger_m_emb", "lnN", SystMap<>::init(trg_unc_lt));
+  cb.cp()
+    .channel({"mt"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_crosstrigger_m", "lnN", SystMap<>::init(xtrg_unc_lt));
+  cb.cp()
+    .channel({"mt"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_crosstrigger_m_emb", "lnN", SystMap<>::init(xtrg_unc_lt));
 
   cb.cp()
-    .channel({"mt", "et"})
+    .channel({"et"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_trigger_e", "lnN", SystMap<>::init(trg_unc_lt));
+  cb.cp()
+    .channel({"et"})
     .process({"Embedded"})
-    .AddSyst(cb, "CMS_eff_crosstrigger_l_emb", "lnN", SystMap<>::init(1.054));
+    .AddSyst(cb, "CMS_eff_trigger_e_emb", "lnN", SystMap<>::init(trg_unc_lt));
+  cb.cp()
+    .channel({"et"})
+    .process(mc_processes)
+    .AddSyst(cb, "CMS_eff_crosstrigger_e", "lnN", SystMap<>::init(xtrg_unc_lt));
+  cb.cp()
+    .channel({"et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_eff_crosstrigger_e_emb", "lnN", SystMap<>::init(xtrg_unc_lt));
 
   // ##########################################################################
   // Uncertainty: e -> tauh, mu ->tauh fake rate
+  // References:CMS AN 2018/255
   // ##########################################################################
 
   cb.cp()
@@ -684,10 +700,6 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // ##########################################################################
 
   // Embedded Normalization: No Lumi, Zjxsec information used, instead derived from data using dimuon selection efficiency
-  cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process({"Embedded"})
-      .AddSyst(cb, "CMS_htt_doublemutrg_", "lnN", SystMap<>::init(1.04));
 
   // TTbar contamination in embedded events: 10% shape uncertainty of assumed ttbar->tautau event shape
   // cb.cp()
