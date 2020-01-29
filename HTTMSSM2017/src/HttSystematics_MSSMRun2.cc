@@ -459,7 +459,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   cb.cp()
       .channel({"tt", "mt", "et"})
       .process({"ZTT", "ZL", "ZJ"})
-      .AddSyst(cb, "DY_pT_reweighting_", "shape", SystMap<>::init(1.0));
+      .AddSyst(cb, "dy_pt_reweighting_", "shape", SystMap<>::init(1.0));
 
   // ##########################################################################
   // Uncertainty: TT shape reweighting
@@ -471,7 +471,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   cb.cp()
       .channel({"tt", "mt", "et"})
       .process({"TTT", "TTL", "TTJ", "TT"})
-      .AddSyst(cb, "top_pT_reweighting_", "shape", SystMap<>::init(1.00));
+      .AddSyst(cb, "top_pt_reweighting_", "shape", SystMap<>::init(1.00));
 
   // ##########################################################################
   // Uncertainty: Jet to tau fakes
