@@ -565,20 +565,20 @@ int main(int argc, char** argv) {
     .SetVerbosity(1);
   if(auto_rebin) rebin.Rebin(cb, cb);
 
-  // cout << "Generating bbb uncertainties...";
-  // auto bbb = ch::BinByBinFactory()
-  //   .SetPattern("CMS_$ANALYSIS_$BIN_$ERA_$PROCESS_bin_$#")
-  //   .SetAddThreshold(0.)
-  //   .SetMergeThreshold(0.4)
-  //   .SetFixNorm(true)
-  //   .SetMergeSaturatedBins(false)
-  //   .SetPoissonErrors(poisson_bbb);
-  // for (auto chn : chns) {
-  //   std::cout << " - Doing bbb for channel " << chn << "\n";
-  //   bbb.MergeAndAdd(cb.cp().channel({chn}).backgrounds().FilterAll([](ch::Object const* obj) {
-  //               return BinIsSBControlRegion(obj);
-  //               }), cb);
-  // }
+  cout << "Generating bbb uncertainties...";
+  auto bbb = ch::BinByBinFactory()
+    .SetPattern("CMS_$ANALYSIS_$BIN_$ERA_$PROCESS_bin_$#")
+    .SetAddThreshold(0.)
+    .SetMergeThreshold(0.4)
+    .SetFixNorm(true)
+    .SetMergeSaturatedBins(false)
+    .SetPoissonErrors(true);
+  for (auto chn : chns) {
+    std::cout << " - Doing bbb for channel " << chn << "\n";
+    bbb.MergeAndAdd(cb.cp().channel({chn}).backgrounds().FilterAll([](ch::Object const* obj) {
+                return BinIsSBControlRegion(obj);
+                }), cb);
+  }
   // // And now do bbb for the control region with a slightly different config:
   // auto bbb_ctl = ch::BinByBinFactory()
   //   .SetPattern("CMS_$ANALYSIS_$BIN_$ERA_$PROCESS_bin_$#")
@@ -619,14 +619,14 @@ int main(int argc, char** argv) {
 
 
   
-  if (classic_bbb) {
-    auto bbb = ch::BinByBinFactory()
-      .SetAddThreshold(0.0)
-      .SetMergeThreshold(0.5)
-      .SetFixNorm(false);
-    bbb.MergeBinErrors(cb.cp().backgrounds());
-    bbb.AddBinByBin(cb.cp().backgrounds(), cb);
-    }
+  // if (classic_bbb) {
+  //   auto bbb = ch::BinByBinFactory()
+  //     .SetAddThreshold(0.0)
+  //     .SetMergeThreshold(0.5)
+  //     .SetFixNorm(false);
+  //   bbb.MergeBinErrors(cb.cp().backgrounds());
+  //   bbb.AddBinByBin(cb.cp().backgrounds(), cb);
+  //   }
 ////if (binomial_bbb) {
 ////  auto bbb = ch::BinByBinFactory()
 ////                 .SetPattern("CMS_$ANALYSIS_$CHANNEL_$BIN_$ERA_$PROCESS_binomial_bin_$#")
