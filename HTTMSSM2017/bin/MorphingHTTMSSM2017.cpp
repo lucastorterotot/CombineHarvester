@@ -565,31 +565,31 @@ int main(int argc, char** argv) {
     .SetVerbosity(1);
   if(auto_rebin) rebin.Rebin(cb, cb);
 
-  cout << "Generating bbb uncertainties...";
-  auto bbb = ch::BinByBinFactory()
-    .SetPattern("CMS_$ANALYSIS_$BIN_$ERA_$PROCESS_bin_$#")
-    .SetAddThreshold(0.)
-    .SetMergeThreshold(0.4)
-    .SetFixNorm(true)
-    .SetMergeSaturatedBins(false)
-    .SetPoissonErrors(true);
-  for (auto chn : chns) {
-    std::cout << " - Doing bbb for channel " << chn << "\n";
-    bbb.MergeAndAdd(cb.cp().channel({chn}).backgrounds().FilterAll([](ch::Object const* obj) {
-                return BinIsSBControlRegion(obj);
-                }), cb);
-  }
-  // And now do bbb for the control region with a slightly different config:
-  auto bbb_ctl = ch::BinByBinFactory()
-    .SetPattern("CMS_$ANALYSIS_$BIN_$ERA_$PROCESS_bin_$#")
-    .SetAddThreshold(0.)
-    .SetMergeThreshold(0.4)
-    .SetFixNorm(false)  // contrary to signal region, bbb *should* change yield here
-    .SetVerbosity(1);
-  // Will merge but only for non W and QCD processes, to be on the safe side
-  bbb_ctl.MergeBinErrors(cb.cp().process({"QCD", "W"}, false).FilterProcs(BinIsNotSBControlRegion));
-  bbb_ctl.AddBinByBin(cb.cp().process({"QCD", "W"}, false).FilterProcs(BinIsNotSBControlRegion), cb);
-  cout << " done\n";
+  // cout << "Generating bbb uncertainties...";
+  // auto bbb = ch::BinByBinFactory()
+  //   .SetPattern("CMS_$ANALYSIS_$BIN_$ERA_$PROCESS_bin_$#")
+  //   .SetAddThreshold(0.)
+  //   .SetMergeThreshold(0.4)
+  //   .SetFixNorm(true)
+  //   .SetMergeSaturatedBins(false)
+  //   .SetPoissonErrors(true);
+  // for (auto chn : chns) {
+  //   std::cout << " - Doing bbb for channel " << chn << "\n";
+  //   bbb.MergeAndAdd(cb.cp().channel({chn}).backgrounds().FilterAll([](ch::Object const* obj) {
+  //               return BinIsSBControlRegion(obj);
+  //               }), cb);
+  // }
+  // // And now do bbb for the control region with a slightly different config:
+  // auto bbb_ctl = ch::BinByBinFactory()
+  //   .SetPattern("CMS_$ANALYSIS_$BIN_$ERA_$PROCESS_bin_$#")
+  //   .SetAddThreshold(0.)
+  //   .SetMergeThreshold(0.4)
+  //   .SetFixNorm(false)  // contrary to signal region, bbb *should* change yield here
+  //   .SetVerbosity(1);
+  // // Will merge but only for non W and QCD processes, to be on the safe side
+  // bbb_ctl.MergeBinErrors(cb.cp().process({"QCD", "W"}, false).FilterProcs(BinIsNotSBControlRegion));
+  // bbb_ctl.AddBinByBin(cb.cp().process({"QCD", "W"}, false).FilterProcs(BinIsNotSBControlRegion), cb);
+  // cout << " done\n";
 
   // if(postfit_plot){
   //   cb.ForEachSyst([](ch::Systematic *s) {
