@@ -167,6 +167,7 @@ int main(int argc, char** argv) {
     if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "W"), bkgs.end());
     if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "VVJ"), bkgs.end());
     if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTJ"), bkgs.end());
+    if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZJ"), bkgs.end());
     if ( chan.find("mt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZJ"), bkgs.end());
     if ( chan.find("et") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZJ"), bkgs.end());
     bkgs = JoinStr({bkgs,{"jetFakes"}});
