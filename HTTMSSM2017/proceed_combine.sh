@@ -17,5 +17,6 @@ for p in gg bb
 do
     combineTool.py -m "110,120,130,140,180,200,250,300,400,450,600,700,800,900,1200,1400,1500,2300,2600,2900" -M AsymptoticLimits --rAbsAcc 0 --rRelAcc 0.0005 --setParameters r_ggH=0,r_bbH=0 --redefineSignalPOIs r_${p}H -d mt/ws.root --there -n ".${p}H" --parallel 25
     combineTool.py -M CollectLimits ./*/higgsCombine.${p}H*.root --use-dirs -o "mssm_${p}H.json"
-    python ../../../MSSMFull2016/scripts/plotMSSMLimits.py --logy --logx mssm_${p}H_mt.json -o mssm_mt_${p}H --process '${p}#phi' --title-right="41.5 fb^{-1}" --title-left="#mu#tau_{h}" --show 'exp,obs' --plot-exp-points --use-hig-17-020-style
+    python ../../../MSSMFull2016/scripts/plotMSSMLimits.py --logy --logx mssm_${p}H_mt.json -o mssm_mt_${p}H --process "${p}#phi" --title-right="41.5 fb^{-1}" --title-left="#mu#tau_{h}" --show "exp,obs" --plot-exp-points --use-hig-17-020-style
 done
+
