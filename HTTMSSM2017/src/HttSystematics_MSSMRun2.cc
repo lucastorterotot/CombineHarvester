@@ -662,6 +662,17 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   //     .AddSyst(cb, "QCDScale_ttH", "lnN", SystMap<>::init(1.08));
 
   // // PDF
+
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"ggH"})
+    .AddSyst(cb, "pdf_ggH", "lnN", SystMap<>::init(1.032)); // TODO check value
+
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"bbH"})
+    .AddSyst(cb, "pdf_bbH", "lnN", SystMap<>::init(1.021)); // TODO check value
+
   // cb.cp()
   //     .channel({"et", "mt", "tt", "em"})
   //    .process(JoinStr({signals_ggH,signals_ggHToWW}))
