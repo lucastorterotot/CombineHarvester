@@ -481,6 +481,11 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // - FIXME: References?
   // ##########################################################################
 
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"jetFakes"})
+    .AddSyst(cb, "CMS_htt_jetFakeTau_$CHANNEL_13TeV", "lnN", SystMap<>::init(1.20)); // from MSSM 2016
+
   // cb.cp()
   //     .channel({"tt", "mt", "et"})
   //     .process({"jetFakes"})
