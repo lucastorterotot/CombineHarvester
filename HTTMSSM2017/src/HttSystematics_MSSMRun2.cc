@@ -633,6 +633,11 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
     .process({"bbH"})
     .AddSyst(cb, "QCDscale_bbH", "lnN", SystMap<>::init(1.005)); // TODO check value
 
+  // cb.cp().process({"HiggsZH125","HiggsWplusH125","HiggsWminusH125"}).AddSyst(cb, "QCDscale_VH", "lnN",
+  //   SystMapAsymm<process>::init
+  //    ({"HiggsZH125"}, 1.038, 0.969)
+  //    ({"HiggsWplusH125","HiggsWminusH125"},1.005,0.993));
+
   // if (!ggh_wg1) {
   // cb.cp()
   //     .channel({"et", "mt", "tt", "em"})
