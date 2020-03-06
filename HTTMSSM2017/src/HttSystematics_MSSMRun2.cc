@@ -292,71 +292,71 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // MC uncorrelated uncertainty
 
   cb.cp()
-      .channel({"tt", "mt", "et"})
-    .process(mc_processes)
-      .AddSyst(cb, "TES_HadronicTau_1prong0pi0_mc_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"jetFakes"}}))
+    .AddSyst(cb, "TES_HadronicTau_1prong0pi0_mc_", "shape", SystMap<>::init(0.5));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process(mc_processes)
-      .AddSyst(cb, "TES_HadronicTau_1prong1pi0_mc_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"jetFakes"}}))
+    .AddSyst(cb, "TES_HadronicTau_1prong1pi0_mc_", "shape", SystMap<>::init(0.5));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process(mc_processes)
-      .AddSyst(cb, "TES_HadronicTau_3prong0pi0_mc_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"jetFakes"}}))
+    .AddSyst(cb, "TES_HadronicTau_3prong0pi0_mc_", "shape", SystMap<>::init(0.5));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process(mc_processes)
-      .AddSyst(cb, "TES_promptMuon_1prong0pi0_", "shape", SystMap<>::init(1.));
-
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"jetFakes"}}))
+    .AddSyst(cb, "TES_promptMuon_1prong0pi0_", "shape", SystMap<>::init(1.));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process(mc_processes)
-      .AddSyst(cb, "TES_promptEle_1prong0pi0_", "shape", SystMap<>::init(1.));
-
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"jetFakes"}}))
+    .AddSyst(cb, "TES_promptEle_1prong0pi0_", "shape", SystMap<>::init(1.));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-    .process(mc_processes)
-      .AddSyst(cb, "TES_promptEle_1prong1pi0_", "shape", SystMap<>::init(1.));
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"jetFakes"}}))
+    .AddSyst(cb, "TES_promptEle_1prong1pi0_", "shape", SystMap<>::init(1.));
 
 
   // Embedded uncorrelated uncertainty
 
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_HadronicTau_1prong0pi0_emb_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process({"Embedded", "jetFakes"})
+    .AddSyst(cb, "TES_HadronicTau_1prong0pi0_emb_", "shape", SystMap<>::init(0.5));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_HadronicTau_1prong1pi0_emb_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process({"Embedded", "jetFakes"})
+    .AddSyst(cb, "TES_HadronicTau_1prong1pi0_emb_", "shape", SystMap<>::init(0.5));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process({"Embedded"})
-      .AddSyst(cb, "TES_HadronicTau_3prong0pi0_emb_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process({"Embedded", "jetFakes"})
+    .AddSyst(cb, "TES_HadronicTau_3prong0pi0_emb_", "shape", SystMap<>::init(0.5));
+  
 
   // MC + embedded correlated uncertainty
 
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process(JoinStr({mc_processes, {"Embedded"}}))
-      .AddSyst(cb, "TES_HadronicTau_1prong0pi0_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"Embedded", "jetFakes"}}))
+    .AddSyst(cb, "TES_HadronicTau_1prong0pi0_", "shape", SystMap<>::init(0.5));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process(JoinStr({mc_processes, {"Embedded"}}))
-      .AddSyst(cb, "TES_HadronicTau_1prong1pi0_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"Embedded", "jetFakes"}}))
+    .AddSyst(cb, "TES_HadronicTau_1prong1pi0_", "shape", SystMap<>::init(0.5));
+  
   cb.cp()
-      .channel({"tt", "mt", "et"})
-      .process(JoinStr({mc_processes, {"Embedded"}}))
-      .AddSyst(cb, "TES_HadronicTau_3prong0pi0_", "shape", SystMap<>::init(0.5));
-
+    .channel({"tt", "mt", "et"})
+    .process(JoinStr({mc_processes, {"Embedded", "jetFakes"}}))
+    .AddSyst(cb, "TES_HadronicTau_3prong0pi0_", "shape", SystMap<>::init(0.5));
+  
   // ##########################################################################
   // Uncertainty: Jet energy scale
   // References:
