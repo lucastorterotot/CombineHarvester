@@ -131,7 +131,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   cb.cp()
     .channel({"et"})
     .process({"ZL"})
-    .AddSyst(cb, "ele_to_tauh_fake", "lnN", SystMap<>::init(1.11)); // 16%?
+    .AddSyst(cb, "ele_to_tauh_fake", "lnN", SystMap<>::init(1.16));
 
   cb.cp()
     .channel({"tt"})
@@ -141,7 +141,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   cb.cp()
     .channel({"mt"})
     .process({"ZL"})
-    .AddSyst(cb, "mu_to_tauh_fake", "lnN", SystMap<>::init(1.12)); // 26%?
+    .AddSyst(cb, "mu_to_tauh_fake", "lnN", SystMap<>::init(1.26));
 
   // ##########################################################################
   // Uncertainty: Electron, muon and tau ID efficiency
