@@ -483,7 +483,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   cb.cp()
     .channel({"tt", "mt", "et"})
-    .process({"jetFakes"})
+    .process({"jetFakes"}) // TTJ, VVJ ?
     .AddSyst(cb, "CMS_htt_jetFakeTau_$CHANNEL_13TeV", "lnN", SystMap<>::init(1.20)); // from MSSM 2016
 
   cb.cp()
@@ -584,6 +584,68 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   //   .channel({"mt", "et"})
   //     .process({"jetFakes"})
   //     .AddSyst(cb, "ff_tt_dm0_njet1_stat_", "lnN", SystMap<>::init(1.011));
+
+  //stat norm uncertainties
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"jetFakes"})
+    .AddSyst(cb, "ff_norm_stat_$CHANNEL_$BIN", "lnN", SystMap<channel, bin_id>::init
+								  ({"mt"}, {7}, 1.040)
+								  ({"mt"}, {8}, 1.039)
+								  ({"mt"}, {9}, 1.040)
+								  ({"mt"}, {10}, 1.038)
+								  ({"mt"}, {11}, 1.035)
+								  ({"et"}, {7}, 1.071)
+								  ({"et"}, {8}, 1.058)
+								  ({"et"}, {9}, 1.071)
+								  ({"et"}, {10}, 1.044)
+								  ({"et"}, {11}, 1.059)
+								  ({"tt"}, {7}, 1.028)
+								  ({"tt"}, {8}, 1.023)
+								  ({"tt"}, {9}, 1.028)
+                                                                  );
+
+  //syst norm uncertainties: bin-correlated
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"jetFakes"})
+    .AddSyst(cb, "ff_norm_syst_$CHANNEL", "lnN", SystMap<channel, bin_id>::init
+								  ({"mt"}, {7}, 1.075)
+								  ({"mt"}, {8}, 1.075)
+								  ({"mt"}, {9}, 1.068)
+								  ({"mt"}, {10}, 1.063)
+								  ({"mt"}, {11}, 1.055)
+								  ({"et"}, {7}, 1.097)
+								  ({"et"}, {8}, 1.097)
+								  ({"et"}, {9}, 1.089)
+								  ({"et"}, {10}, 1.068)
+								  ({"et"}, {11}, 1.068)
+								  ({"tt"}, {7}, 1.100)
+								  ({"tt"}, {8}, 1.099)
+								  ({"tt"}, {9}, 1.100)
+                                                                  );
+
+  //syst norm uncertainties: bin-specific
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"jetFakes"})
+    .AddSyst(cb, "ff_sub_syst_$CHANNEL_$BIN", "lnN", SystMap<channel, bin_id>::init
+                                                                  ({"mt"}, {7}, 1.04)
+                                                                  ({"mt"}, {8}, 1.04)
+                                                                  ({"mt"}, {9}, 1.04)
+                                                                  ({"mt"}, {10}, 1.04)
+                                                                  ({"mt"}, {11}, 1.04)
+                                                                  ({"et"}, {7}, 1.04)
+                                                                  ({"et"}, {8}, 1.04)
+                                                                  ({"et"}, {9}, 1.04)
+                                                                  ({"et"}, {10}, 1.04)
+                                                                  ({"et"}, {11}, 1.04)
+                                                                  ({"tt"}, {7}, 1.03)
+                                                                  ({"tt"}, {8}, 1.03)
+                                                                  ({"tt"}, {9}, 1.03)
+                                                                  );
+
+
 
   // ##########################################################################
   // Uncertainty: Theory uncertainties
