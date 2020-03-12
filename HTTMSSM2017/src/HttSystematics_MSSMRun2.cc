@@ -15,6 +15,7 @@ using ch::syst::era;
 using ch::syst::channel;
 using ch::syst::bin_id;
 using ch::syst::process;
+using ch::syst::mass;
 using ch::syst::bin;
 using ch::JoinStr;
 
@@ -26,6 +27,8 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   // Signal processes
   std::vector<std::string> signals = {"ggH","bbH"};
+  std::vector<std::string> SM_procs = {"HiggsVBF125", "HiggsGGH125", "HiggsWplusH125", "HiggsWminusH125", "HiggsTTH125", "HiggsZH125"};
+  signals = JoinStr({signals,SM_procs});
 
   // Background processes
   /* // Not used in the function, keep it for documentation purposes.
@@ -483,7 +486,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   cb.cp()
     .channel({"tt", "mt", "et"})
-    .process({"jetFakes"}) // TTJ, VVJ ?
+    .process({"jetFakes"})
     .AddSyst(cb, "CMS_htt_jetFakeTau_$CHANNEL_13TeV", "lnN", SystMap<>::init(1.20)); // from MSSM 2016
 
   cb.cp()
@@ -692,18 +695,25 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   cb.cp()
     .channel({"tt", "mt", "et"})
-    .process({"ggH"})
-    .AddSyst(cb, "QCDscale_ggH", "lnN", SystMap<>::init(1.039)); // TODO check value
+    .process({"HiggsGGH125"})
+    .AddSyst(cb, "QCDscale_ggH125", "lnN", SystMap<>::init(1.039));
 
   cb.cp()
     .channel({"tt", "mt", "et"})
-    .process({"bbH"})
-    .AddSyst(cb, "QCDscale_bbH", "lnN", SystMap<>::init(1.005)); // TODO check value
+    .process({"HiggsVBF125"})
+    .AddSyst(cb, "QCDscale_HVBF125", "lnN", SystMapAsymm<>::init(1.004,0.997));
 
-  // cb.cp().process({"HiggsZH125","HiggsWplusH125","HiggsWminusH125"}).AddSyst(cb, "QCDscale_VH", "lnN",
-  //   SystMapAsymm<process>::init
-  //    ({"HiggsZH125"}, 1.038, 0.969)
-  //    ({"HiggsWplusH125","HiggsWminusH125"},1.005,0.993));
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"HiggsZH125", "HiggsWplusH125", "HiggsWminusH125"})
+    .AddSyst(cb, "QCDscale_VH", "lnN", SystMapAsymm<process>::init
+             ({"HiggsZH125"}, 1.038, 0.969)
+             ({"HiggsWplusH125", "HiggsWminusH125"},1.005,0.993));
+
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"HiggsTTH125"})
+    .AddSyst(cb, "QCDscale_TTH125", "lnN", SystMapAsymm<>::init(1.058,0.908));
 
   // if (!ggh_wg1) {
   // cb.cp()
@@ -732,13 +742,81 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   cb.cp()
     .channel({"tt", "mt", "et"})
-    .process({"ggH"})
-    .AddSyst(cb, "pdf_ggH", "lnN", SystMap<>::init(1.032)); // TODO check value
+    .process({"HiggsGGH125"})
+    .AddSyst(cb, "pdf_ggH125", "lnN", SystMap<>::init(1.032)); // TODO check value
 
   cb.cp()
     .channel({"tt", "mt", "et"})
-    .process({"bbH"})
-    .AddSyst(cb, "pdf_bbH", "lnN", SystMap<>::init(1.021)); // TODO check value
+    .process({"HiggsZH125", "HiggsWplusH125", "HiggsWminusH125","HiggsVBF125"})
+    .AddSyst(cb, "pdf_VH", "lnN", SystMap<process>::init
+             ({"HiggsZH125"},1.016)
+             ({"HiggsWplusH125", "HiggsWminusH125"},1.019)
+             ({"HiggsVBF125"},1.021)); // TODO check value
+
+  cb.cp()
+     .process({"bbH"})
+    .AddSyst(cb, "QCDScale_QshScale_bbH","lnN", SystMap<channel,bin_id,mass>::init
+     ({"em","et","mt","tt"}, {8,10,12}, {"80"},   1.034)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"80"},   0.827)
+     ({"em","et","mt","tt"}, {8,10,12}, {"90"},   1.036)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"90"},   0.835)
+     ({"em","et","mt","tt"}, {8,10,12}, {"100"},  1.036)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"100"},  0.847)
+     ({"em","et","mt","tt"}, {8,10,12}, {"110"},  1.038)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"110"},  0.853)
+     ({"em","et","mt","tt"}, {8,10,12}, {"120"},  1.038) 
+     ({"em","et","mt","tt"}, {9,11,13}, {"120"},  0.862)
+     ({"em","et","mt","tt"}, {8,10,12}, {"130"},  1.04 )
+     ({"em","et","mt","tt"}, {9,11,13}, {"130"},  0.867)
+     ({"em","et","mt","tt"}, {8,10,12}, {"140"},  1.04 )  
+     ({"em","et","mt","tt"}, {9,11,13}, {"140"},  0.872)
+     ({"em","et","mt","tt"}, {8,10,12}, {"160"},  1.038)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"160"},  0.887)
+     ({"em","et","mt","tt"}, {8,10,12}, {"180"},  1.038)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"180"},  0.897)
+     ({"em","et","mt","tt"}, {8,10,12}, {"200"},  1.038)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"200"},  0.902)
+     ({"em","et","mt","tt"}, {8,10,12}, {"250"},  1.035)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"250"},  0.922)
+     ({"em","et","mt","tt"}, {8,10,12}, {"350"},  1.033)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"350"},  0.939)
+     ({"em","et","mt","tt"}, {8,10,12}, {"400"},  1.036)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"400"},  0.934)
+     ({"em","et","mt","tt"}, {8,10,12}, {"450"},  1.035)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"450"},  0.94 )
+     ({"em","et","mt","tt"}, {8,10,12}, {"500"},  1.032)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"500"},  0.95 )
+     ({"em","et","mt","tt"}, {8,10,12}, {"600"},  1.034)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"600"},  0.948)
+     ({"em","et","mt","tt"}, {8,10,12}, {"700"},  1.034)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"700"},  0.952)
+     ({"em","et","mt","tt"}, {8,10,12}, {"800"},  1.036)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"800"},  0.948)
+     ({"em","et","mt","tt"}, {8,10,12}, {"900"},  1.036)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"900"},  0.95 )
+     ({"em","et","mt","tt"}, {8,10,12}, {"1000"}, 1.037)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"1000"}, 0.949)
+     ({"em","et","mt","tt"}, {8,10,12}, {"1200"}, 1.037)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"1200"}, 0.951)
+     ({"em","et","mt","tt"}, {8,10,12}, {"1400"}, 1.034)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"1400"}, 0.957)
+     ({"em","et","mt","tt"}, {8,10,12}, {"1600"}, 1.041)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"1600"}, 0.943)
+     ({"em","et","mt","tt"}, {8,10,12}, {"1800"}, 1.037)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"1800"}, 0.952)
+     ({"em","et","mt","tt"}, {8,10,12}, {"2000"}, 1.035)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"2000"}, 0.956)
+     ({"em","et","mt","tt"}, {8,10,12}, {"2300"}, 1.035)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"2300"}, 0.956)
+     ({"em","et","mt","tt"}, {8,10,12}, {"2600"}, 1.039)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"2600"}, 0.95 )
+     ({"em","et","mt","tt"}, {8,10,12}, {"2900"}, 1.036)   
+     ({"em","et","mt","tt"}, {9,11,13}, {"2900"}, 0.954)
+     ({"em","et","mt","tt"}, {8,10,12}, {"3200"}, 1.034) 
+     ({"em","et","mt","tt"}, {9,11,13}, {"3200"}, 0.957));
+
+/*  cb.cp().process({"TTH_SM125"}).AddSyst(cb, "pdf_Higgs_ttH","lnN",
+    SystMap<>::init(1.036));*/
 
   // cb.cp()
   //     .channel({"et", "mt", "tt", "em"})

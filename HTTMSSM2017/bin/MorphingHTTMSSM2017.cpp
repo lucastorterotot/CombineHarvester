@@ -156,6 +156,7 @@ int main(int argc, char** argv) {
   map<string, VString> bkg_procs;
   VString bkgs, bkgs_em;
   bkgs = {"W", "ZTT", "QCD", "ZL", "ZJ", "TTT", "TTL", "TTJ", "VVJ", "VVT", "VVL"};
+  VString SM_procs = {"HiggsVBF125", "HiggsGGH125", "HiggsWplusH125", "HiggsWminusH125", "HiggsTTH125", "HiggsZH125"};
   if(embedding){
     if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "ZTT"), bkgs.end());
     if ( chan.find("tt") != std::string::npos ) bkgs.erase(std::remove(bkgs.begin(), bkgs.end(), "TTT"), bkgs.end());
@@ -204,7 +205,7 @@ int main(int argc, char** argv) {
     cats["mt"] = {
       // {8, "mt_nobtag_tight"},
       // {9, "mt_btag_tight"},
-      // {10, "mt_nobtag_loosemt"},
+      //{10, "mt_nobtag_loosemt"},
       // {11, "mt_btag_loosemt"},
       { 7, "mt_inclusive"},
     };
@@ -346,9 +347,8 @@ int main(int argc, char** argv) {
                     true);
     cb.AddProcesses(masses, {"htt"}, {"13TeV"}, {chn}, signal_types["bbH"], cats[chn],
                     true);
-    // Add SM125 as background here
-    // if(SM125==string("bkg_SM125") && chn!="zmm") cb.AddProcesses({"*"}, {"htt"}, {"13TeV"}, {chn}, SM_procs, cats[chn+"_13TeV"], false);
-    // if(SM125==string("signal_SM125") && chn!="zmm") cb.AddProcesses({"*"}, {"htt"}, {"13TeV"}, {chn}, SM_procs, cats[chn+"_13TeV"], true);
+    cb.AddProcesses({"*"}, {"htt"}, {"13TeV"}, {chn}, SM_procs, cats[chn],
+                    true);
   }
 
   // Add systematics
@@ -357,6 +357,9 @@ int main(int argc, char** argv) {
   // Extract shapes from input ROOT files
   for (string chn : chns) {
     cb.cp().channel({chn}).backgrounds().ExtractShapes(
+        input_dir[chn] + "htt_" + chn + ".inputs_datacards_mt_tot" + ".root",
+        "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
+    cb.cp().channel({chn}).process(SM_procs).ExtractShapes(
         input_dir[chn] + "htt_" + chn + ".inputs_datacards_mt_tot" + ".root",
         "$BIN/$PROCESS", "$BIN/$PROCESS_$SYSTEMATIC");
     if (mod_dep) {
