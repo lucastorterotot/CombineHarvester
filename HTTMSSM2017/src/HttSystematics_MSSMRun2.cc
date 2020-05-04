@@ -280,7 +280,27 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // - FIXME: add systematic process for heppy!
   // ##########################################################################
 
+  // // MC uncorrelated uncertainty
+  
+  // cb.cp()
+  //   .channel({"em", "et"})
+  //   .process(mc_processes)
+  //   .AddSyst(cb, "CMS_scale_e", "shape", SystMap<>::init(1.00));
+  // //.AddSyst(cb, "CMS_scale_mc_e", "shape", SystMap<>::init(0.71));
+  
+  // cb.cp()
+  //   .channel({"em", "et"})
+  //   .process(mc_processes)
+  //   .AddSyst(cb, "CMS_res_e", "shape", SystMap<>::init(1.00));
+  // //.AddSyst(cb, "CMS_scale_mc_e", "shape", SystMap<>::init(0.71));
+  
+  // // Embedded uncorrelated uncertainty
 
+  // cb.cp()
+  //   .channel({"em", "et"})
+  //   .process({"EMB"})
+  //   .AddSyst(cb, "CMS_scale_e_emb", "shape", SystMap<>::init(1.00));
+  // //.AddSyst(cb, "CMS_scale_emb_e", "shape", SystMap<>::init(0.71));
 
   // ##########################################################################
   // Uncertainty: Tau energy scale
@@ -341,6 +361,22 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
     .channel({"tt", "mt", "et"})
     .process({"Embedded", "jetFakes"})
     .AddSyst(cb, "TES_HadronicTau_3prong0pi0_emb_", "shape", SystMap<>::init(0.5));
+  
+
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "TES_HadronicTau_1prong0pi0_emb_", "shape", SystMap<>::init(0.866)); // from KIT
+  
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "TES_HadronicTau_1prong1pi0_emb_", "shape", SystMap<>::init(0.866)); // from KIT
+  
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "TES_HadronicTau_3prong0pi0_emb_", "shape", SystMap<>::init(0.866)); // from KIT
   
 
   // MC + embedded correlated uncertainty
@@ -462,7 +498,7 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   cb.cp()
       .channel({"tt", "mt", "et"})
       .process({"ZTT", "ZL", "ZJ"})
-      .AddSyst(cb, "dy_pt_reweighting_", "shape", SystMap<>::init(1.0));
+    .AddSyst(cb, "dy_pt_reweighting_", "shape", SystMap<>::init(0.1)); // 1.0 -> 0.1 from KIT
 
   // ##########################################################################
   // Uncertainty: TT shape reweighting
@@ -665,34 +701,35 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   // - FIXME: References?
   // ##########################################################################
 
-  // // Uncertainty on branching ratio for HTT at 125 GeV
-  // cb.cp()
-  //     .channel({"et", "mt", "tt", "em"})
-  //     .process(signals)
-  //     .AddSyst(cb, "BR_htt_THU", "lnN", SystMap<>::init(1.017));
-  // cb.cp()
-  //     .channel({"et", "mt", "tt", "em"})
-  //     .process(signals)
-  //     .AddSyst(cb, "BR_htt_PU_mq", "lnN", SystMap<>::init(1.0099));
-  // cb.cp()
-  //     .channel({"et", "mt", "tt", "em"})
-  //     .process(signals)
-  //     .AddSyst(cb, "BR_htt_PU_alphas", "lnN", SystMap<>::init(1.0062));
-  // // Uncertainty on branching ratio for HWW at 125 GeV
-  // cb.cp()
-  //    .channel({"em"})
-  //    .process(JoinStr({signals_ggHToWW,signals_qqHToWW}))
-  //    .AddSyst(cb, "BR_hww_THU", "lnN", SystMap<>::init(1.0099));   
-  // cb.cp()
-  //    .channel({"em"})
-  //    .process(JoinStr({signals_ggHToWW,signals_qqHToWW}))
-  //    .AddSyst(cb, "BR_hww_PU_mq", "lnN", SystMap<>::init(1.0099));
-  // cb.cp()
-  //    .channel({"em"})
-  //    .process(JoinStr({signals_ggHToWW,signals_qqHToWW}))
-  //    .AddSyst(cb, "BR_hww_PU_alphas", "lnN", SystMap<>::init(1.0066));
-  // // QCD scale
+  // Uncertainty on branching ratio for HTT at 125 GeV
+  cb.cp()
+    .channel({"et", "mt", "tt", "em"})
+    .process(signals)
+    .AddSyst(cb, "BR_htt_THU", "lnN", SystMap<>::init(1.017));
+  cb.cp()
+    .channel({"et", "mt", "tt", "em"})
+    .process(signals)
+    .AddSyst(cb, "BR_htt_PU_mq", "lnN", SystMap<>::init(1.0099));
+  cb.cp()
+    .channel({"et", "mt", "tt", "em"})
+    .process(signals)
+    .AddSyst(cb, "BR_htt_PU_alphas", "lnN", SystMap<>::init(1.0062));
 
+  // Uncertainty on branching ratio for HWW at 125 GeV
+  cb.cp()
+    .channel({"et", "mt", "tt", "em"})
+    .process({"HiggsWplusH125", "HiggsWminusH125"})
+    .AddSyst(cb, "BR_hww_THU", "lnN", SystMap<>::init(1.0099));   
+  cb.cp()
+    .channel({"et", "mt", "tt", "em"})
+    .process({"HiggsWplusH125", "HiggsWminusH125"})
+    .AddSyst(cb, "BR_hww_PU_mq", "lnN", SystMap<>::init(1.0099));
+  cb.cp()
+    .channel({"et", "mt", "tt", "em"})
+    .process({"HiggsWplusH125", "HiggsWminusH125"})
+    .AddSyst(cb, "BR_hww_PU_alphas", "lnN", SystMap<>::init(1.0066));
+
+  // QCD scale
   cb.cp()
     .channel({"tt", "mt", "et"})
     .process({"HiggsGGH125"})
@@ -747,11 +784,12 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
 
   cb.cp()
     .channel({"tt", "mt", "et"})
-    .process({"HiggsZH125", "HiggsWplusH125", "HiggsWminusH125","HiggsVBF125"})
+    .process({"HiggsZH125", "HiggsWplusH125", "HiggsWminusH125","HiggsVBF125","HiggsTTH125"})
     .AddSyst(cb, "pdf_VH", "lnN", SystMap<process>::init
              ({"HiggsZH125"},1.016)
              ({"HiggsWplusH125", "HiggsWminusH125"},1.019)
-             ({"HiggsVBF125"},1.021)); // TODO check value
+             ({"HiggsVBF125"},1.021)
+             ({"HiggsTTH125"},1.036)); // TODO check value
 
   cb.cp()
      .process({"bbH"})
@@ -902,6 +940,10 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   //   .channel({"tt", "mt", "et"})
   //   .process({"Embedded"})
   //   .AddSyst(cb, "CMS_htt_emb_ttbar_", "shape", SystMap<>::init(1.00));
+  cb.cp()
+    .channel({"tt", "mt", "et"})
+    .process({"Embedded"})
+    .AddSyst(cb, "CMS_htt_emb_ttbar_", "lnN", SystMap<>::init(1.1));
 
   // Uncertainty of hadronic tau track efficiency correction
   cb.cp()
@@ -957,40 +999,6 @@ void AddMSSMRun2Systematics(CombineHarvester &cb, bool jetfakes, bool embedding,
   	       ({"mt", "et"}, {11}, 1.03) //nobtag loose
   	       );
 
-  // cb.cp()
-  //     .channel({"tt", "mt", "et"})
-  //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_qcd_dm0_njet0_stat_", "shape", SystMap<>::init(1.00));
-  // cb.cp()
-  //     .channel({"tt", "mt", "et"})
-  //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_qcd_dm0_njet1_stat_", "shape", SystMap<>::init(1.00));
-
-  // // Shape syst. of different contr
-  // cb.cp()
-  //     .channel({"tt", "mt", "et"})
-  //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_qcd_syst_", "shape", SystMap<>::init(1.00));
-
-  // // Shape syst. in tautau due to using QCD FF also for W / tt
-  // cb.cp()
-  //     .channel({"tt", "mt", "et"})
-  //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_w_syst_", "shape", SystMap<>::init(1.00));
-  // cb.cp()
-  //     .channel({"tt", "mt", "et"})
-  //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_tt_syst_", "shape", SystMap<>::init(1.00));
-
-  // cb.cp()
-  //     .channel({"tt", "mt", "et"})
-  //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_w_frac_syst_", "shape", SystMap<>::init(1.00));
-
-  // cb.cp()
-  //     .channel({"tt", "mt", "et"})
-  //     .process({"jetFakes"})
-  //     .AddSyst(cb, "ff_tt_frac_syst_", "shape", SystMap<>::init(1.00));
   // //below: jetFakes norm uncertainties. Current values are for 2016, which are probably a good approx. for 2017. To be updated.
 
   // // Stat. norm (uncorrelated across years)
